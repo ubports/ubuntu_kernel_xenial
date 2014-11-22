@@ -70,15 +70,29 @@ static struct ixgbevf_info ixgbevf_X540_vf_info = {
 	.flags	= 0,
 };
 
+const struct ixgbevf_info ixgbevf_X550_vf_info = {
+	.mac = ixgbe_mac_X550_vf,
+	.flags	= 0,
+};
+
+const struct ixgbevf_info ixgbevf_X550EM_x_vf_info = {
+	.mac = ixgbe_mac_X550EM_x_vf,
+	.flags	= 0,
+};
+
 
 enum ixgbevf_boards {
 	board_82599_vf,
 	board_X540_vf,
+	board_X550_vf,
+	board_X550EM_x_vf,
 };
 
 static const struct ixgbevf_info *ixgbevf_info_tbl[] = {
 	[board_82599_vf] = &ixgbevf_82599_vf_info,
 	[board_X540_vf]  = &ixgbevf_X540_vf_info,
+	[board_X550_vf]  = &ixgbevf_X550_vf_info,
+	[board_X550EM_x_vf] = &ixgbevf_X550EM_x_vf_info,
 };
 
 /* ixgbevf_pci_tbl - PCI Device ID Table
@@ -92,6 +106,8 @@ static const struct ixgbevf_info *ixgbevf_info_tbl[] = {
 static struct pci_device_id ixgbevf_pci_tbl[] = {
 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_82599_VF), board_82599_vf },
 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X540_VF), board_X540_vf },
+	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550_VF), board_X550_vf },
+	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_X_VF), board_X550EM_x_vf },
 	/* required last entry */
 	{0, }
 };
@@ -4432,7 +4448,7 @@ static int __devinit ixgbevf_probe(struct pci_dev *pdev,
 	struct ixgbevf_adapter *adapter = NULL;
 	struct ixgbe_hw *hw = NULL;
 	static int cards_found;
-	int i, err, pci_using_dac;
+	int err, pci_using_dac;
 	const struct ixgbevf_info *ei = ixgbevf_info_tbl[ent->driver_data];
 
 	err = pci_enable_device(pdev);
@@ -4619,9 +4635,22 @@ static int __devinit ixgbevf_probe(struct pci_dev *pdev,
 		break;
 	}
 
-	/* print the MAC address */
-	for (i = 0; i < 6; i++)
-		printk("%2.2x%c", netdev->dev_addr[i], i == 5 ? '\n' : ':');
+	/* print the VF info */
+	dev_info(&pdev->dev, "%pM\n", netdev->dev_addr);
+	dev_info(&pdev->dev, "MAC: %d\n", hw->mac.type);
+
+	switch (hw->mac.type) {
+	case ixgbe_mac_X550_vf:
+		dev_info(&pdev->dev, "Intel(R) X550 Virtual Function\n");
+		break;
+	case ixgbe_mac_X540_vf:
+		dev_info(&pdev->dev, "Intel(R) X540 Virtual Function\n");
+		break;
+	case ixgbe_mac_82599_vf:
+	default:
+		dev_info(&pdev->dev, "Intel(R) 82599 Virtual Function\n");
+		break;
+	}
 
 #ifdef NETIF_F_GRO
         if (netdev->features & NETIF_F_GRO)
