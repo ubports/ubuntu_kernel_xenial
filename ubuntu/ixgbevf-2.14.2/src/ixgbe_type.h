@@ -104,6 +104,8 @@
 #define IXGBE_DEV_ID_X540T			0x1528
 #define IXGBE_DEV_ID_X540_VF			0x1515
 #define IXGBE_DEV_ID_X540_VF_HV			0x1530
+#define IXGBE_DEV_ID_X550_VF			0x1565
+#define IXGBE_DEV_ID_X550EM_X_VF		0x15A8
 
 /* General Registers */
 #define IXGBE_CTRL		0x00000
@@ -2782,6 +2784,8 @@ enum ixgbe_mac_type {
 	ixgbe_mac_82599_vf,
 	ixgbe_mac_X540,
 	ixgbe_mac_X540_vf,
+	ixgbe_mac_X550_vf,
+	ixgbe_mac_X550EM_x_vf,
 	ixgbe_num_macs
 };
 
