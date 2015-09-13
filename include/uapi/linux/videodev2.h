@@ -577,6 +577,20 @@ struct v4l2_pix_format {
 #define V4L2_PIX_FMT_SRGGB12 v4l2_fourcc('R', 'G', '1', '2') /* 12  RGRG.. GBGB.. */
 #define V4L2_PIX_FMT_SBGGR16 v4l2_fourcc('B', 'Y', 'R', '2') /* 16  BGBG.. GRGR.. */
 
+/* Raw bayer vector formats. */
+#define V4L2_PIX_FMT_SBGGR8_16V32	v4l2_fourcc('b', 'V', '0', 'A')
+#define V4L2_PIX_FMT_SGBRG8_16V32	v4l2_fourcc('b', 'V', '0', 'B')
+#define V4L2_PIX_FMT_SGRBG8_16V32	v4l2_fourcc('b', 'V', '0', 'C')
+#define V4L2_PIX_FMT_SRGGB8_16V32	v4l2_fourcc('b', 'V', '0', 'D')
+#define V4L2_PIX_FMT_SBGGR10V32		v4l2_fourcc('b', 'V', '0', 'E')
+#define V4L2_PIX_FMT_SGBRG10V32		v4l2_fourcc('b', 'V', '0', 'F')
+#define V4L2_PIX_FMT_SGRBG10V32		v4l2_fourcc('b', 'V', '0', 'G')
+#define V4L2_PIX_FMT_SRGGB10V32		v4l2_fourcc('b', 'V', '0', 'H')
+#define V4L2_PIX_FMT_SBGGR12V32		v4l2_fourcc('b', 'V', '0', 'I')
+#define V4L2_PIX_FMT_SGBRG12V32		v4l2_fourcc('b', 'V', '0', 'J')
+#define V4L2_PIX_FMT_SGRBG12V32		v4l2_fourcc('b', 'V', '0', 'K')
+#define V4L2_PIX_FMT_SRGGB12V32		v4l2_fourcc('b', 'V', '0', 'L')
+
 /* compressed formats */
 #define V4L2_PIX_FMT_MJPEG    v4l2_fourcc('M', 'J', 'P', 'G') /* Motion-JPEG   */
 #define V4L2_PIX_FMT_JPEG     v4l2_fourcc('J', 'P', 'E', 'G') /* JFIF JPEG     */
