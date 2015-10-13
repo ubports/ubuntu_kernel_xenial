@@ -4807,7 +4807,6 @@ static void intel_post_plane_update(struct intel_crtc *crtc)
 {
 	struct intel_crtc_atomic_commit *atomic = &crtc->atomic;
 	struct drm_device *dev = crtc->base.dev;
-	struct drm_i915_private *dev_priv = dev->dev_private;
 	struct drm_plane *plane;
 
 	if (atomic->wait_vblank)
@@ -4822,7 +4821,7 @@ static void intel_post_plane_update(struct intel_crtc *crtc)
 		intel_update_watermarks(&crtc->base);
 
 	if (atomic->update_fbc)
-		intel_fbc_update(dev_priv);
+		intel_fbc_update(crtc);
 
 	if (atomic->post_enable_primary)
 		intel_post_enable_primary(&crtc->base);
