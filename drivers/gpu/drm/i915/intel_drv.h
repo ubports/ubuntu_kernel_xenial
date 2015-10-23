@@ -1237,6 +1237,22 @@ void intel_edp_drrs_invalidate(struct drm_device *dev,
 void intel_edp_drrs_flush(struct drm_device *dev, unsigned frontbuffer_bits);
 void hsw_dp_set_ddi_pll_sel(struct intel_crtc_state *pipe_config);
 
+void
+intel_dp_program_link_training_pattern(struct intel_dp *intel_dp,
+				       uint8_t dp_train_pat);
+void
+intel_dp_set_signal_levels(struct intel_dp *intel_dp);
+void intel_dp_set_idle_link_train(struct intel_dp *intel_dp);
+uint8_t
+intel_dp_voltage_max(struct intel_dp *intel_dp);
+uint8_t
+intel_dp_pre_emphasis_max(struct intel_dp *intel_dp, uint8_t voltage_swing);
+void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
+			   uint8_t *link_bw, uint8_t *rate_select);
+bool intel_dp_source_supports_hbr2(struct drm_device *dev);
+bool
+intel_dp_get_link_status(struct intel_dp *intel_dp, uint8_t link_status[DP_LINK_STATUS_SIZE]);
+
 /* intel_dp_mst.c */
 int intel_dp_mst_encoder_init(struct intel_digital_port *intel_dig_port, int conn_id);
 void intel_dp_mst_encoder_cleanup(struct intel_digital_port *intel_dig_port);
