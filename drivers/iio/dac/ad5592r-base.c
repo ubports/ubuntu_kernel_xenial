@@ -140,7 +140,7 @@ static int ad5592r_gpio_init(struct ad5592r_state *st)
 	st->gpiochip.label = dev_name(st->dev);
 	st->gpiochip.base = -1;
 	st->gpiochip.ngpio = 8;
-	st->gpiochip.dev = st->dev;
+	st->gpiochip.parent = st->dev;
 	st->gpiochip.can_sleep = true;
 	st->gpiochip.direction_input = ad5592r_gpio_direction_input;
 	st->gpiochip.direction_output = ad5592r_gpio_direction_output;
