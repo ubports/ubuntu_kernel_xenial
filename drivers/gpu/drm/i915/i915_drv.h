@@ -747,12 +747,6 @@ struct intel_uncore {
 #define CSR_VERSION_MAJOR(version)	((version) >> 16)
 #define CSR_VERSION_MINOR(version)	((version) & 0xffff)
 
-enum csr_state {
-	FW_UNINITIALIZED = 0,
-	FW_LOADED,
-	FW_FAILED
-};
-
 struct intel_csr {
 	const char *fw_path;
 	uint32_t *dmc_payload;
@@ -761,7 +755,6 @@ struct intel_csr {
 	uint32_t mmio_count;
 	uint32_t mmioaddr[8];
 	uint32_t mmiodata[8];
-	enum csr_state state;
 };
 
 #define DEV_INFO_FOR_EACH_FLAG(func, sep) \
@@ -1710,9 +1703,6 @@ struct drm_i915_private {
 	struct intel_guc guc;
 
 	struct intel_csr csr;
-
-	/* Display CSR-related protection */
-	struct mutex csr_lock;
 
 	struct intel_gmbus gmbus[GMBUS_NUM_PINS];
 
