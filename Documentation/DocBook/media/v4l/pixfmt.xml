@@ -1640,6 +1640,8 @@ information.</para>
     &sub-nv16m;
     &sub-nv24;
     &sub-m420;
+    &sub-yyuv420-v;
+    &sub-yyuv422-v;
   </section>
 
   <section>
