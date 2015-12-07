@@ -104,7 +104,6 @@ struct intel_pinctrl {
 	struct intel_pinctrl_context context;
 };
 
-#define gpiochip_to_pinctrl(c)	container_of(c, struct intel_pinctrl, chip)
 #define pin_to_padno(c, p)	((p) - (c)->pin_base)
 
 static struct intel_community *intel_get_community(struct intel_pinctrl *pctrl,
@@ -597,7 +596,7 @@ static const struct pinctrl_desc intel_pinctrl_desc = {
 
 static int intel_gpio_get(struct gpio_chip *chip, unsigned offset)
 {
-	struct intel_pinctrl *pctrl = gpiochip_to_pinctrl(chip);
+	struct intel_pinctrl *pctrl = gpiochip_get_data(chip);
 	void __iomem *reg;
 
 	reg = intel_get_padcfg(pctrl, offset, PADCFG0);
@@ -609,7 +608,7 @@ static int intel_gpio_get(struct gpio_chip *chip, unsigned offset)
 
 static void intel_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
 {
-	struct intel_pinctrl *pctrl = gpiochip_to_pinctrl(chip);
+	struct intel_pinctrl *pctrl = gpiochip_get_data(chip);
 	void __iomem *reg;
 
 	reg = intel_get_padcfg(pctrl, offset, PADCFG0);
@@ -653,7 +652,7 @@ static const struct gpio_chip intel_gpio_chip = {
 static void intel_gpio_irq_ack(struct irq_data *d)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
-	struct intel_pinctrl *pctrl = gpiochip_to_pinctrl(gc);
+	struct intel_pinctrl *pctrl = gpiochip_get_data(gc);
 	const struct intel_community *community;
 	unsigned pin = irqd_to_hwirq(d);
 
@@ -674,7 +673,7 @@ static void intel_gpio_irq_ack(struct irq_data *d)
 static void intel_gpio_irq_mask_unmask(struct irq_data *d, bool mask)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
-	struct intel_pinctrl *pctrl = gpiochip_to_pinctrl(gc);
+	struct intel_pinctrl *pctrl = gpiochip_get_data(gc);
 	const struct intel_community *community;
 	unsigned pin = irqd_to_hwirq(d);
 	unsigned long flags;
@@ -714,7 +713,7 @@ static void intel_gpio_irq_unmask(struct irq_data *d)
 static int intel_gpio_irq_type(struct irq_data *d, unsigned type)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
-	struct intel_pinctrl *pctrl = gpiochip_to_pinctrl(gc);
+	struct intel_pinctrl *pctrl = gpiochip_get_data(gc);
 	unsigned pin = irqd_to_hwirq(d);
 	unsigned long flags;
 	void __iomem *reg;
@@ -768,7 +767,7 @@ static int intel_gpio_irq_type(struct irq_data *d, unsigned type)
 static int intel_gpio_irq_wake(struct irq_data *d, unsigned int on)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
-	struct intel_pinctrl *pctrl = gpiochip_to_pinctrl(gc);
+	struct intel_pinctrl *pctrl = gpiochip_get_data(gc);
 	const struct intel_community *community;
 	unsigned pin = irqd_to_hwirq(d);
 	unsigned padno, gpp, gpp_offset;
@@ -876,7 +875,7 @@ static int intel_gpio_probe(struct intel_pinctrl *pctrl, int irq)
 	pctrl->chip.parent = pctrl->dev;
 	pctrl->chip.base = -1;
 
-	ret = gpiochip_add(&pctrl->chip);
+	ret = gpiochip_add_data(&pctrl->chip, pctrl);
 	if (ret) {
 		dev_err(pctrl->dev, "failed to register gpiochip\n");
 		return ret;
