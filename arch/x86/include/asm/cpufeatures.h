@@ -207,7 +207,6 @@
 #define X86_FEATURE_FLEXPRIORITY ( 8*32+ 2) /* Intel FlexPriority */
 #define X86_FEATURE_EPT         ( 8*32+ 3) /* Intel Extended Page Table */
 #define X86_FEATURE_VPID        ( 8*32+ 4) /* Intel Virtual Processor ID */
-
 #define X86_FEATURE_VMMCALL     ( 8*32+15) /* Prefer vmmcall to vmcall */
 #define X86_FEATURE_XENPV       ( 8*32+16) /* "" Xen paravirtual guest */
 
