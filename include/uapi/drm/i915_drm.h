@@ -356,7 +356,7 @@ typedef struct drm_i915_irq_wait {
 #define I915_PARAM_EU_TOTAL		 34
 #define I915_PARAM_HAS_GPU_RESET	 35
 #define I915_PARAM_HAS_RESOURCE_STREAMER 36
-#define I915_PARAM_HAS_EXEC_SOFTPIN     37
+#define I915_PARAM_HAS_EXEC_SOFTPIN	 37
 
 typedef struct drm_i915_getparam {
 	__s32 param;
@@ -696,7 +696,7 @@ struct drm_i915_gem_exec_object2 {
 #define EXEC_OBJECT_NEEDS_GTT	(1<<1)
 #define EXEC_OBJECT_WRITE	(1<<2)
 #define EXEC_OBJECT_SUPPORTS_48B_ADDRESS (1<<3)
-#define EXEC_OBJECT_PINNED     (1<<4)
+#define EXEC_OBJECT_PINNED	(1<<4)
 #define __EXEC_OBJECT_UNKNOWN_FLAGS -(EXEC_OBJECT_PINNED<<1)
 	__u64 flags;
 
