@@ -3362,7 +3362,7 @@ static inline bool intel_gmbus_is_forced_bit(struct i2c_adapter *adapter)
 extern void intel_i2c_reset(struct drm_device *dev);
 
 /* intel_bios.c */
-int intel_bios_init(struct drm_device *dev);
+int intel_bios_init(struct drm_i915_private *dev_priv);
 bool intel_bios_is_valid_vbt(const void *buf, size_t size);
 bool intel_bios_is_port_present(struct drm_i915_private *dev_priv, enum port port);
 
