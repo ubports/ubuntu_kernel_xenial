@@ -3709,11 +3709,11 @@ static void skl_update_wm(struct drm_crtc *crtc)
 static void ilk_compute_wm_config(struct drm_device *dev,
 				  struct intel_wm_config *config)
 {
-	struct intel_crtc *intel_crtc;
+	struct intel_crtc *crtc;
 
 	/* Compute the currently _active_ config */
-	for_each_intel_crtc(dev, intel_crtc) {
-		const struct intel_pipe_wm *wm = &intel_crtc->wm.active.ilk;
+	for_each_intel_crtc(dev, crtc) {
+		const struct intel_pipe_wm *wm = &crtc->wm.active.ilk;
 
 		if (!wm->pipe_enabled)
 			continue;
