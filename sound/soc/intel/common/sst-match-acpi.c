@@ -14,6 +14,7 @@
  * more details.
  */
 
+#include <linux/module.h>
 #include "sst-acpi.h"
 
 static acpi_status sst_acpi_mach_match(acpi_handle handle, u32 level,
@@ -43,3 +44,6 @@ struct sst_acpi_mach *sst_acpi_find_machine(struct sst_acpi_mach *machines)
 	return NULL;
 }
 EXPORT_SYMBOL_GPL(sst_acpi_find_machine);
+
+MODULE_LICENSE("GPL v2");
+MODULE_DESCRIPTION("Intel Common ACPI Match module");
