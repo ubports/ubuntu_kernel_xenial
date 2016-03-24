@@ -1494,6 +1494,7 @@ struct intel_vbt_data {
 	union child_device_config *child_dev;
 
 	struct ddi_vbt_port_info ddi_port_info[I915_MAX_PORTS];
+	struct sdvo_device_mapping sdvo_mappings[2];
 };
 
 enum intel_ddb_partitioning {
@@ -1825,8 +1826,6 @@ struct drm_i915_private {
 	struct mutex mm_lock;
 
 	/* Kernel Modesetting */
-
-	struct sdvo_device_mapping sdvo_mappings[2];
 
 	struct drm_crtc *plane_to_crtc_mapping[I915_MAX_PIPES];
 	struct drm_crtc *pipe_to_crtc_mapping[I915_MAX_PIPES];
