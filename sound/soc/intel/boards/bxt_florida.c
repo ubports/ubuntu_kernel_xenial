@@ -619,26 +619,12 @@ const struct dev_pm_ops snd_mrgfld_florida_mc_pm_ops = {
 
 static struct platform_driver snd_mrgfld_florida_mc_driver = {
 	.driver = {
-		.owner = THIS_MODULE,
 		.name = "mrgfld_florida",
 	},
 	.probe = snd_mrgfld_florida_mc_probe,
 	.remove = snd_mrgfld_florida_mc_remove,
 };
-
-static int snd_mrgfld_florida_driver_init(void)
-{
-	pr_info("Morganfield Machine Driver mrgfld_florida registered\n");
-	return platform_driver_register(&snd_mrgfld_florida_mc_driver);
-}
-module_init(snd_mrgfld_florida_driver_init);
-
-static void snd_mrgfld_florida_driver_exit(void)
-{
-	pr_debug("In %s\n", __func__);
-	platform_driver_unregister(&snd_mrgfld_florida_mc_driver);
-}
-module_exit(snd_mrgfld_florida_driver_exit)
+module_platform_driver(snd_mrgfld_florida_mc_driver);
 
 MODULE_DESCRIPTION("ASoC Morganfield Machine driver");
 MODULE_AUTHOR("Samreen Nilofer <samreen.nilofer@intel.com>");
