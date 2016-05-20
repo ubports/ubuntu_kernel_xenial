@@ -569,46 +569,10 @@ static struct snd_soc_card snd_soc_card_wm8998_mrgfld = {
 
 static int snd_mrgfld_florida_mc_probe(struct platform_device *pdev)
 {
-	int ret_val = 0;
-	struct mrgfld_mc_private *drv;
-	struct snd_soc_card *card_mrgfld = NULL;
-
 	is_codec8998 = true;
-	card_mrgfld = &snd_soc_card_wm8998_mrgfld;
+	snd_soc_card_wm8998_mrgfld.dev = &pdev->dev;
 
-	drv = devm_kzalloc(&pdev->dev, sizeof(*drv), GFP_ATOMIC);
-	if (!drv)
-		return -ENOMEM;
-
-	card_mrgfld->dev = &pdev->dev;
-	snd_soc_card_set_drvdata(card_mrgfld, drv);
-	/* Register the card */
-	ret_val = snd_soc_register_card(card_mrgfld);
-	if (ret_val) {
-		pr_err("snd_soc_register_card failed %d\n", ret_val);
-		goto unalloc;
-	}
-	platform_set_drvdata(pdev, card_mrgfld);
-	pr_info("%s successful\n", __func__);
-	return ret_val;
-
-unalloc:
-	devm_kfree(&pdev->dev, drv);
-	return ret_val;
-}
-
-static int snd_mrgfld_florida_mc_remove(struct platform_device *pdev)
-{
-	struct snd_soc_card *soc_card = platform_get_drvdata(pdev);
-	struct mrgfld_mc_private *drv = snd_soc_card_get_drvdata(soc_card);
-
-	pr_debug("In %s\n", __func__);
-
-	devm_kfree(&pdev->dev, drv);
-	snd_soc_card_set_drvdata(soc_card, NULL);
-	snd_soc_unregister_card(soc_card);
-	platform_set_drvdata(pdev, NULL);
-	return 0;
+	return devm_snd_soc_register_card(&pdev->dev, &snd_soc_card_wm8998_mrgfld);
 }
 
 const struct dev_pm_ops snd_mrgfld_florida_mc_pm_ops = {
@@ -622,7 +586,6 @@ static struct platform_driver snd_mrgfld_florida_mc_driver = {
 		.name = "mrgfld_florida",
 	},
 	.probe = snd_mrgfld_florida_mc_probe,
-	.remove = snd_mrgfld_florida_mc_remove,
 };
 module_platform_driver(snd_mrgfld_florida_mc_driver);
 
