@@ -1595,6 +1595,7 @@ access the palette, this must be done with ioctls of the Linux framebuffer API.<
     &sub-srggb12;
     &sub-srggb12p;
     &sub-sgrbgv;
+    &sub-srggb14;
   </section>
 
   <section id="yuv-formats">
