@@ -47,6 +47,8 @@
 #define BXTWC_MIRQLVL1		0x4E0E
 #define BXTWC_MPWRTNIRQ		0x4E0F
 
+#define BXTWC_MIRQLVL1_MCHGR	BIT(5)
+
 #define BXTWC_MTHRM0IRQ		0x4E12
 #define BXTWC_MTHRM1IRQ		0x4E13
 #define BXTWC_MTHRM2IRQ		0x4E14
@@ -57,6 +59,10 @@
 #define BXTWC_MGPIO0IRQ		0x4E19
 #define BXTWC_MGPIO1IRQ		0x4E1A
 #define BXTWC_MCRITIRQ		0x4E1B
+
+#define BXTWC_STHRM0IRQ		0x4F19
+#define BXTWC_STHRM1IRQ		0x4F1A
+#define BXTWC_STHRM2IRQ		0x4F1B
 
 /* Whiskey Cove PMIC share same ACPI ID between different platforms */
 #define BROXTON_PMIC_WC_HRV	4
@@ -109,11 +115,114 @@ static const struct regmap_irq bxtwc_regmap_irqs_level2[] = {
 	REGMAP_IRQ_REG(BXTWC_THRM2_IRQ, 2, 0xff),
 	REGMAP_IRQ_REG(BXTWC_BCU_IRQ, 3, 0x1f),
 	REGMAP_IRQ_REG(BXTWC_ADC_IRQ, 4, 0xff),
-	REGMAP_IRQ_REG(BXTWC_CHGR0_IRQ, 5, 0x1f),
+	REGMAP_IRQ_REG(BXTWC_CHGR0_IRQ, 5, 0x3f),
 	REGMAP_IRQ_REG(BXTWC_CHGR1_IRQ, 6, 0x1f),
 	REGMAP_IRQ_REG(BXTWC_GPIO0_IRQ, 7, 0xff),
 	REGMAP_IRQ_REG(BXTWC_GPIO1_IRQ, 8, 0x3f),
 	REGMAP_IRQ_REG(BXTWC_CRIT_IRQ, 9, 0x03),
+};
+
+static struct trip_config_map str0_trip_config[] = {
+	{
+		.irq_reg = BXTWC_THRM0IRQ,
+		.irq_mask = 0x01,
+		.irq_en = BXTWC_MTHRM0IRQ,
+		.irq_en_mask = 0x01,
+		.evt_stat = BXTWC_STHRM0IRQ,
+		.evt_mask = 0x01,
+		.trip_num = 0
+	},
+	{
+		.irq_reg = BXTWC_THRM0IRQ,
+		.irq_mask = 0x10,
+		.irq_en = BXTWC_MTHRM0IRQ,
+		.irq_en_mask = 0x10,
+		.evt_stat = BXTWC_STHRM0IRQ,
+		.evt_mask = 0x10,
+		.trip_num = 1
+	}
+};
+
+static struct trip_config_map str1_trip_config[] = {
+	{
+		.irq_reg = BXTWC_THRM0IRQ,
+		.irq_mask = 0x02,
+		.irq_en = BXTWC_MTHRM0IRQ,
+		.irq_en_mask = 0x02,
+		.evt_stat = BXTWC_STHRM0IRQ,
+		.evt_mask = 0x02,
+		.trip_num = 0
+	},
+	{
+		.irq_reg = BXTWC_THRM0IRQ,
+		.irq_mask = 0x20,
+		.irq_en = BXTWC_MTHRM0IRQ,
+		.irq_en_mask = 0x20,
+		.evt_stat = BXTWC_STHRM0IRQ,
+		.evt_mask = 0x20,
+		.trip_num = 1
+	},
+};
+
+static struct trip_config_map str2_trip_config[] = {
+	{
+		.irq_reg = BXTWC_THRM0IRQ,
+		.irq_mask = 0x04,
+		.irq_en = BXTWC_MTHRM0IRQ,
+		.irq_en_mask = 0x04,
+		.evt_stat = BXTWC_STHRM0IRQ,
+		.evt_mask = 0x04,
+		.trip_num = 0
+	},
+	{
+		.irq_reg = BXTWC_THRM0IRQ,
+		.irq_mask = 0x40,
+		.irq_en = BXTWC_MTHRM0IRQ,
+		.irq_en_mask = 0x40,
+		.evt_stat = BXTWC_STHRM0IRQ,
+		.evt_mask = 0x40,
+		.trip_num = 1
+	},
+};
+
+static struct trip_config_map str3_trip_config[] = {
+	{
+		.irq_reg = BXTWC_THRM2IRQ,
+		.irq_mask = 0x10,
+		.irq_en = BXTWC_MTHRM2IRQ,
+		.irq_en_mask = 0x10,
+		.evt_stat = BXTWC_STHRM2IRQ,
+		.evt_mask = 0x10,
+		.trip_num = 0
+	},
+};
+
+static struct thermal_irq_map bxtwc_thermal_irq_map[] = {
+	{
+		.handle = "STR0",
+		.trip_config = str0_trip_config,
+		.num_trips = ARRAY_SIZE(str0_trip_config),
+	},
+	{
+		.handle = "STR1",
+		.trip_config = str1_trip_config,
+		.num_trips = ARRAY_SIZE(str1_trip_config),
+	},
+	{
+		.handle = "STR2",
+		.trip_config = str2_trip_config,
+		.num_trips = ARRAY_SIZE(str2_trip_config),
+	},
+	{
+		.handle = "STR3",
+		.trip_config = str3_trip_config,
+		.num_trips = ARRAY_SIZE(str3_trip_config),
+	},
+};
+
+static struct pmic_thermal_data bxtwc_thermal_data = {
+	.maps = bxtwc_thermal_irq_map,
+	.num_maps = ARRAY_SIZE(bxtwc_thermal_irq_map),
 };
 
 static struct regmap_irq_chip bxtwc_regmap_irq_chip = {
@@ -143,6 +252,10 @@ static struct resource adc_resources[] = {
 	DEFINE_RES_IRQ_NAMED(BXTWC_ADC_IRQ, "ADC"),
 };
 
+static struct resource usbc_resources[] = {
+	DEFINE_RES_IRQ_NAMED(BXTWC_CHGR0_IRQ, "USBC"),
+};
+
 static struct resource charger_resources[] = {
 	DEFINE_RES_IRQ_NAMED(BXTWC_CHGR0_IRQ, "CHARGER"),
 	DEFINE_RES_IRQ_NAMED(BXTWC_CHGR1_IRQ, "CHARGER1"),
@@ -168,6 +281,13 @@ static struct mfd_cell bxt_wc_dev[] = {
 		.name = "bxt_wcove_thermal",
 		.num_resources = ARRAY_SIZE(thermal_resources),
 		.resources = thermal_resources,
+		.platform_data = &bxtwc_thermal_data,
+		.pdata_size = sizeof(bxtwc_thermal_data),
+	},
+	{
+		.name = "bxt_wcove_usbc",
+		.num_resources = ARRAY_SIZE(usbc_resources),
+		.resources = usbc_resources,
 	},
 	{
 		.name = "bxt_wcove_ext_charger",
@@ -402,6 +522,10 @@ static int bxtwc_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "Failed to create sysfs group %d\n", ret);
 		goto err_sysfs;
 	}
+
+	/* Unmask CHRG first level irq */
+	regmap_update_bits(pmic->regmap, BXTWC_MIRQLVL1,
+				BXTWC_MIRQLVL1_MCHGR, 0);
 
 	return 0;
 
