@@ -357,6 +357,16 @@ config ACPI_THERMAL_REL
 	tristate
 	depends on ACPI
 
+config INTEL_PMIC_THERMAL
+	tristate "Intel PMIC thermal driver"
+	depends on X86 && INTEL_SOC_PMIC && REGMAP
+	help
+	  Select this driver for Intel PMIC with ADC channels monitoring system
+	  temperature measurements and alerts.
+	  This driver is used for monitoring the ADC channels of PMIC and handles
+	  the alert trip point interrupts and notifies the thermal framework with
+	  the trip point and temperature details of the zone.
+
 config INTEL_PCH_THERMAL
 	tristate "Intel PCH Thermal Reporting Driver"
 	depends on X86 && PCI
