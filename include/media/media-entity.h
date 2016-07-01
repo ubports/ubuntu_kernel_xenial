@@ -119,7 +119,7 @@ static inline u32 media_entity_subtype(struct media_entity *entity)
 }
 
 #define MEDIA_ENTITY_ENUM_MAX_DEPTH	16
-#define MEDIA_ENTITY_ENUM_MAX_ID	64
+#define MEDIA_ENTITY_ENUM_MAX_ID	128
 
 /*
  * The number of pads can't be bigger than the number of entities,
