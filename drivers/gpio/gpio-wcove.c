@@ -382,17 +382,12 @@ static int wcove_gpio_remove(struct platform_device *pdev)
 	return 0;
 }
 
-static const struct platform_device_id pmic_gpio_id_table[] = {
-	{ "bxt_wcove_gpio", },
-};
-
 static struct platform_driver wcove_gpio_driver = {
+	.driver = {
+		.name = "bxt_wcove_gpio",
+	},
 	.probe = wcove_gpio_probe,
 	.remove = wcove_gpio_remove,
-	.driver = {
-		.name = "wcove_gpio",
-	},
-	.id_table = pmic_gpio_id_table,
 };
 
 module_platform_driver(wcove_gpio_driver);
@@ -400,3 +395,4 @@ module_platform_driver(wcove_gpio_driver);
 MODULE_AUTHOR("Ajay Thomas <ajay.thomas.david.rajamanickam@intel.com>");
 MODULE_DESCRIPTION("Intel Whiskey Cove GPIO Driver");
 MODULE_LICENSE("GPL v2");
+MODULE_ALIAS("platform:bxt_wcove_gpio");
