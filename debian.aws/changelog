@@ -1,0 +1,13 @@
+linux-aws (4.4.0-1000.1) xenial; urgency=low
+
+  [ Kamal Mostafa ]
+
+  * Initial linux-aws packaging based on linux (4.4.0-36.55) xenial
+
+ -- Kamal Mostafa <kamal@canonical.com>  Wed, 31 Aug 2016 13:02:16 -0700
+
+linux-aws (4.4.0-1000.0) xenial; urgency=low
+
+  * Empty entry
+
+ -- Kamal Mostafa <kamal@canonical.com>  Wed, 31 Aug 2016 13:02:16 -0700
