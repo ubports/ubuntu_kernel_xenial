@@ -1,0 +1,13 @@
+linux-gke (4.4.0-1001.1) xenial; urgency=low
+
+  [ Kamal Mostafa ]
+
+  * Initial linux-gke packaging based on linux (4.4.0-59.80) xenial
+
+ -- Kamal Mostafa <kamal@canonical.com>  Mon, 23 Jan 2017 09:20:42 -0800
+
+linux-gke (4.4.0-1000.0) xenial; urgency=low
+
+  * Empty entry
+
+ -- Kamal Mostafa <kamal@canonical.com>  Mon, 23 Jan 2017 09:20:42 -0800
