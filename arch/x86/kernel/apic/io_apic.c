@@ -1598,14 +1598,20 @@ void __init setup_ioapic_ids_from_mpc(void)
 }
 #endif
 
-int no_timer_check __initdata;
+int no_timer_check __initdata = 1;
 
 static int __init notimercheck(char *s)
 {
-	no_timer_check = 1;
-	return 1;
+	int ret = 0;
+
+	if (s)
+		ret = kstrtoint(s, 0, &no_timer_check);
+	else
+		no_timer_check = 1;
+
+	return ret;
 }
-__setup("no_timer_check", notimercheck);
+early_param("no_timer_check", notimercheck);
 
 /*
  * There is a nasty bug in some older SMP boards, their mptable lies
