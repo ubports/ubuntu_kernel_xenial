@@ -14,7 +14,6 @@ int snd_hdac_sync_audio_rate(struct hdac_bus *bus, hda_nid_t nid, int rate);
 int snd_hdac_acomp_get_eld(struct hdac_bus *bus, hda_nid_t nid,
 			   bool *audio_enabled, char *buffer, int max_bytes);
 int snd_hdac_i915_init(struct hdac_bus *bus);
-int snd_hdac_i915_init_bpo(struct hdac_bus *bus);
 int snd_hdac_i915_exit(struct hdac_bus *bus);
 int snd_hdac_i915_register_notifier(const struct i915_audio_component_audio_ops *);
 #else
@@ -42,10 +41,6 @@ static inline int snd_hdac_acomp_get_eld(struct hdac_bus *bus, hda_nid_t nid,
 	return -ENODEV;
 }
 static inline int snd_hdac_i915_init(struct hdac_bus *bus)
-{
-	return -ENODEV;
-}
-static inline int snd_hdac_i915_init_bpo(struct hdac_bus *bus)
 {
 	return -ENODEV;
 }
