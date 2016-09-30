@@ -1,0 +1,6 @@
+config IXGBEVF_2_14_2
+	tristate "ixgbevf version 2.14.2"
+	depends on !IXGBEVF && PCI_MSI
+	---help---
+	ixgbevf Linux* Virtual Function (VF) Driver for Intel® Ethernet
+	Network Connection, version 2.14.2.
