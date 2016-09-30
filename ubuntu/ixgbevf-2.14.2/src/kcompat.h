@@ -3182,6 +3182,11 @@ do {								\
 #define HAVE_PM_QOS_REQUEST_ACTIVE
 #define HAVE_8021P_SUPPORT
 #define HAVE_NDO_GET_STATS64
+
+/* UBUNTU: ixgbevf-2.14.2: Replace deprecated u64_stats _bh calls */
+#define u64_stats_fetch_retry_bh(a,b) u64_stats_fetch_retry_irq(a,b)
+#define u64_stats_fetch_begin_bh(a) u64_stats_fetch_begin_irq(a)
+
 #endif /* < 2.6.36 */
 
 /*****************************************************************************/
