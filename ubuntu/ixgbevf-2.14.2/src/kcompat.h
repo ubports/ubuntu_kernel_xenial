@@ -301,6 +301,11 @@ struct msix_entry {
 #define IS_ENABLED(option) \
 	(config_enabled(option) || config_enabled(option##_MODULE))
 
+/* UBUNTU: ixgbevf-2.14.2: disable VLAN tagging */
+#undef NETIF_F_HW_VLAN_CTAG_TX
+#undef NETIF_F_HW_VLAN_CTAG_RX
+#undef NETIF_F_HW_VLAN_CTAG_FILTER
+
 #if !defined(NETIF_F_HW_VLAN_TX) && !defined(NETIF_F_HW_VLAN_CTAG_TX)
 struct _kc_vlan_ethhdr {
 	unsigned char	h_dest[ETH_ALEN];
