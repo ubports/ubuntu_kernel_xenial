@@ -33,6 +33,10 @@ obj-$(CONFIG_HIO)             += hio/
 ##
 ##
 ##
+obj-$(CONFIG_IXGBEVF_2_14_2)	+= ixgbevf-2.14.2/src/
+##
+##
+##
 ##
 ##
 ##
