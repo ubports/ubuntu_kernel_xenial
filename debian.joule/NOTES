@@ -1,0 +1,5 @@
+* BSP kernel can be found at
+  https://git.yoctoproject.org/cgit/cgit.cgi/linux-yocto-4.4/log/?h=standard/intel/bxt-rebase
+* For patches in BSP kernel that are not in mainline, the cherry-pick line in
+  commit log will be changed to:
+  (cherry picked from commit <HASH> intel)

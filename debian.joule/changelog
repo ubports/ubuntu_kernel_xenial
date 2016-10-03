@@ -1,0 +1,16 @@
+linux-joule (4.4.0-1000.1) xenial; urgency=low
+
+  [ Wen-chien Jesse Sung ]
+
+  * Rebase to Ubuntu-4.4.0-38.57
+  * Sync with BSP kernel fa2e6c83ca548b9cdfb8c37fa68df38d221a8189
+
+ -- Wen-chien Jesse Sung <jesse.sung@canonical.com>  Mon, 03 Oct 2016 18:00:00 +0800
+
+linux-joule (4.4.0-1000.0) xenial; urgency=low
+
+  [ Wen-chien Jesse Sung ]
+
+  * empty entry
+
+ -- Wen-chien Jesse Sung <jesse.sung@canonical.com>  Mon, 03 Oct 2016 17:42:35 +0800
