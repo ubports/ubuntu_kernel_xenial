@@ -42,8 +42,6 @@
 
 static struct drm_driver driver;
 
-extern int i915_bpo_enabled;
-
 #define GEN_DEFAULT_PIPEOFFSETS \
 	.pipe_offsets = { PIPE_A_OFFSET, PIPE_B_OFFSET, \
 			  PIPE_C_OFFSET, PIPE_EDP_OFFSET }, \
@@ -985,7 +983,6 @@ error:
 
 static int i915_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 {
-	int ret;
 	struct intel_device_info *intel_info =
 		(struct intel_device_info *) ent->driver_data;
 
@@ -1003,11 +1000,7 @@ static int i915_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	if (PCI_FUNC(pdev->devfn))
 		return -ENODEV;
 
-	ret = drm_get_pci_dev(pdev, ent, &driver);
-
-	if (!ret)
-		i915_bpo_enabled = 1;
-	return ret;
+	return drm_get_pci_dev(pdev, ent, &driver);
 }
 
 static void
