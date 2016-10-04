@@ -17,12 +17,12 @@ obj-$(CONFIG_DM_RAID45)		+= dm-raid4-5/
 ##
 ##
 ifneq ($(filter $(ARCH), i386 x86_64),)
-obj-y                         += vbox/
+obj-n                         += vbox/
 endif
 ##
 ##
 ##
-obj-$(CONFIG_DRM_I915_BPO)	+= i915/
+obj-n	+= i915/
 ##
 ##
 ##
