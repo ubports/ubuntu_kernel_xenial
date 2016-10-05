@@ -9078,8 +9078,8 @@ CONFIG_CFG80211_WEXT                            policy<{'amd64': 'y', 'arm64': '
 CONFIG_CFG80211_WEXT                            flag<REVIEW>
 
 # Menu: Power management and ACPI options
-CONFIG_SUSPEND                                  policy<{'amd64': 'y', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc-powerpc64-smp': 'y', 'powerpc-powerpc-smp': 'y', 'ppc64el': 'y'}>
-CONFIG_SUSPEND_FREEZER                          policy<{'amd64': 'y', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc-powerpc64-smp': 'y', 'powerpc-powerpc-smp': 'y', 'ppc64el': 'y'}>
+CONFIG_SUSPEND                                  policy<{'amd64': 'n', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc-powerpc64-smp': 'y', 'powerpc-powerpc-smp': 'y', 'ppc64el': 'y'}>
+CONFIG_SUSPEND_FREEZER                          policy<{'amd64': 'n', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc-powerpc64-smp': 'y', 'powerpc-powerpc-smp': 'y', 'ppc64el': 'y'}>
 CONFIG_HIBERNATION                              policy<{'amd64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc-powerpc64-emb': 'n', 'powerpc-powerpc64-smp': 'y', 'powerpc-powerpc-e500mc': 'y', 'powerpc-powerpc-smp': 'y', 'ppc64el': 'n', 's390x': 'y'}>
 CONFIG_PM_STD_PARTITION                         policy<{'amd64': '""', 'armhf': '""', 'i386': '""', 'powerpc-powerpc64-smp': '""', 'powerpc-powerpc-e500mc': '""', 'powerpc-powerpc-smp': '""', 's390x': '""'}>
 CONFIG_PM_AUTOSLEEP                             policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'powerpc-powerpc64-smp': 'n', 'powerpc-powerpc-e500mc': 'n', 'powerpc-powerpc-smp': 'n', 'ppc64el': 'n', 's390x': 'n'}>
