@@ -42,6 +42,7 @@
 #define BXTWC_GPIOIRQ0		0x4E0B
 #define BXTWC_GPIOIRQ1		0x4E0C
 #define BXTWC_CRITIRQ		0x4E0D
+#define BXTWC_TMUIRQ		0x4FB6
 
 /* Interrupt MASK Registers */
 #define BXTWC_MIRQLVL1		0x4E0E
@@ -59,6 +60,7 @@
 #define BXTWC_MGPIO0IRQ		0x4E19
 #define BXTWC_MGPIO1IRQ		0x4E1A
 #define BXTWC_MCRITIRQ		0x4E1B
+#define BXTWC_MTMUIRQ		0x4FB7
 
 #define BXTWC_STHRM0IRQ		0x4F19
 #define BXTWC_STHRM1IRQ		0x4F1A
@@ -95,6 +97,7 @@ enum bxtwc_irqs_level2 {
 	BXTWC_GPIO0_IRQ,
 	BXTWC_GPIO1_IRQ,
 	BXTWC_CRIT_IRQ,
+	BXTWC_TMU_IRQ,
 };
 
 static const struct regmap_irq bxtwc_regmap_irqs[] = {
@@ -120,6 +123,10 @@ static const struct regmap_irq bxtwc_regmap_irqs_level2[] = {
 	REGMAP_IRQ_REG(BXTWC_GPIO0_IRQ, 7, 0xff),
 	REGMAP_IRQ_REG(BXTWC_GPIO1_IRQ, 8, 0x3f),
 	REGMAP_IRQ_REG(BXTWC_CRIT_IRQ, 9, 0x03),
+};
+
+static const struct regmap_irq bxtwc_regmap_irqs_tmu[] = {
+	REGMAP_IRQ_REG(BXTWC_TMU_IRQ, 0, 0x06),
 };
 
 static struct trip_config_map str0_trip_config[] = {
@@ -243,6 +250,15 @@ static struct regmap_irq_chip bxtwc_regmap_irq_chip_level2 = {
 	.num_regs = 10,
 };
 
+static struct regmap_irq_chip bxtwc_regmap_irq_chip_tmu = {
+	.name = "bxtwc_irq_chip_tmu",
+	.status_base = BXTWC_TMUIRQ,
+	.mask_base = BXTWC_MTMUIRQ,
+	.irqs = bxtwc_regmap_irqs_tmu,
+	.num_irqs = ARRAY_SIZE(bxtwc_regmap_irqs_tmu),
+	.num_regs = 1,
+};
+
 static struct resource gpio_resources[] = {
 	DEFINE_RES_IRQ_NAMED(BXTWC_GPIO0_IRQ, "GPIO0"),
 	DEFINE_RES_IRQ_NAMED(BXTWC_GPIO1_IRQ, "GPIO1"),
@@ -269,6 +285,10 @@ static struct resource thermal_resources[] = {
 
 static struct resource bcu_resources[] = {
 	DEFINE_RES_IRQ_NAMED(BXTWC_BCU_IRQ, "BCU"),
+};
+
+static struct resource tmu_resources[] = {
+	DEFINE_RES_IRQ_NAMED(BXTWC_TMU_IRQ, "TMU"),
 };
 
 static struct mfd_cell bxt_wc_dev[] = {
@@ -299,6 +319,12 @@ static struct mfd_cell bxt_wc_dev[] = {
 		.num_resources = ARRAY_SIZE(bcu_resources),
 		.resources = bcu_resources,
 	},
+	{
+		.name = "bxt_wcove_tmu",
+		.num_resources = ARRAY_SIZE(tmu_resources),
+		.resources = tmu_resources,
+	},
+
 	{
 		.name = "bxt_wcove_gpio",
 		.num_resources = ARRAY_SIZE(gpio_resources),
@@ -509,6 +535,15 @@ static int bxtwc_probe(struct platform_device *pdev)
 		goto err_irq_chip_level2;
 	}
 
+	ret = regmap_add_irq_chip(pmic->regmap, pmic->irq,
+				  IRQF_ONESHOT | IRQF_SHARED,
+				  0, &bxtwc_regmap_irq_chip_tmu,
+				  &pmic->irq_chip_data_tmu);
+	if (ret) {
+		dev_err(&pdev->dev, "Failed to add TMU IRQ chip\n");
+		goto err_irq_chip_tmu;
+	}
+
 	ret = mfd_add_devices(&pdev->dev, PLATFORM_DEVID_NONE, bxt_wc_dev,
 			      ARRAY_SIZE(bxt_wc_dev), NULL, 0,
 			      NULL);
@@ -532,6 +567,8 @@ static int bxtwc_probe(struct platform_device *pdev)
 err_sysfs:
 	mfd_remove_devices(&pdev->dev);
 err_mfd:
+	regmap_del_irq_chip(pmic->irq, pmic->irq_chip_data_tmu);
+err_irq_chip_tmu:
 	regmap_del_irq_chip(pmic->irq, pmic->irq_chip_data_level2);
 err_irq_chip_level2:
 	regmap_del_irq_chip(pmic->irq, pmic->irq_chip_data);
@@ -547,6 +584,7 @@ static int bxtwc_remove(struct platform_device *pdev)
 	mfd_remove_devices(&pdev->dev);
 	regmap_del_irq_chip(pmic->irq, pmic->irq_chip_data);
 	regmap_del_irq_chip(pmic->irq, pmic->irq_chip_data_level2);
+	regmap_del_irq_chip(pmic->irq, pmic->irq_chip_data_tmu);
 
 	return 0;
 }
