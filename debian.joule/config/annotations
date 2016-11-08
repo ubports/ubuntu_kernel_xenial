@@ -7072,7 +7072,7 @@ CONFIG_APPLE_GMUX                               policy<{'amd64': 'm', 'i386': 'm
 CONFIG_INTEL_RST                                policy<{'amd64': 'm', 'i386': 'm'}>
 CONFIG_INTEL_SMARTCONNECT                       policy<{'amd64': 'm', 'i386': 'm'}>
 CONFIG_PVPANIC                                  policy<{'amd64': 'm', 'i386': 'm'}>
-CONFIG_INTEL_PMC_IPC                            policy<{'amd64': 'm', 'i386': 'm'}>
+CONFIG_INTEL_PMC_IPC                            policy<{'amd64': 'y', 'i386': 'm'}>
 CONFIG_SURFACE_PRO3_BUTTON                      policy<{'amd64': 'm', 'i386': 'm'}>
 
 # Menu: Device Drivers >> X86 Platform Specific Device Drivers >> Intel SCU IPC Support
@@ -9156,7 +9156,7 @@ CONFIG_ACPI_APEI_EINJ                           policy<{'amd64': 'm', 'i386': 'm
 CONFIG_ACPI_APEI_ERST_DEBUG                     policy<{'amd64': 'n', 'i386': 'n'}>
 
 # Menu: Power management and ACPI options >> ACPI (Advanced Configuration and Power Interface) Support >> PMIC (Power Management Integrated Circuit) operation region support
-CONFIG_PMIC_OPREGION                            policy<{'amd64': 'n', 'arm64': 'n', 'i386': 'n'}>
+CONFIG_PMIC_OPREGION                            policy<{'amd64': 'y', 'arm64': 'n', 'i386': 'n'}>
 
 # Menu: Power management and ACPI options >> APM (Advanced Power Management) BIOS support >> Architecture: x86
 CONFIG_APM                                      policy<{'i386': 'm'}>
