@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+	echo "Usage: $0 <linux-source-directory>" 1>&2
+	exit 1
+fi
+master_dir="$1"
+
+# Work out the master kernel version.
+if [ -f "$master_dir/debian/debian.env" ]; then
+	branch=`sed -ne 's/DEBIAN=//p' <"$master_dir/debian/debian.env"`
+	changelog="-l$branch/changelog"
+else
+	changelog=""
+fi
+master_version=`(cd "$master_dir" && LC_ALL=C dpkg-parsechangelog -S Version $changelog)`
+
+here=$(pwd)
+(
+	cd "$master_dir" || exit 1
+
+	git ls-files | grep -v '^debian' | cpio --unconditional -pd --preserve-modification-time "$here"
+)
+
+cp -p "$master_dir/debian/source/options" "debian/source"
+git add .
+
+git commit -s -m "UBUNTU: update to master $master_version"
