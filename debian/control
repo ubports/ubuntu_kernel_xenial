@@ -1,0 +1,11 @@
+Source: zfcpdump-kernel
+Section: admin
+Priority: optional
+Maintainer: Andy Whitcroft <apw@ubuntu.com>
+Build-Depends: debhelper (>= 9), linux-source-4.8.0, bc
+Standards-Version: 3.9.6
+
+Package: zfcpdump-kernel
+Architecture: s390x
+Description: s390x specific fcpdump kernel
+ Specialise cut-down kernel for use with fcpdump mode on s390x.

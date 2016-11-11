@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "Attempting to fix !CONFIG_SECURITYFS header bug ..."
+sed -i 's/const struct inode_operations \*iops))$/const struct inode_operations *iops)/' include/linux/security.h
