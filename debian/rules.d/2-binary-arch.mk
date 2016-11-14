@@ -56,6 +56,14 @@ define build_zfs =
 	$(kmake) -C $(builddir)/build-$*/zfs/module $(conc_level)
 endef
 
+define build_backport-iwlwifi =
+	install -d $(builddir)/build-$*/backport-iwlwifi
+	rsync -a --delete backport-iwlwifi/ $(builddir)/build-$*/backport-iwlwifi
+	cd $(builddir)/build-$*/backport-iwlwifi
+	$(kmake) -C $(builddir)/build-$*/backport-iwlwifi $(conc_level) $(iwlwifiopts) defconfig-joule
+	$(kmake) -C $(builddir)/build-$*/backport-iwlwifi $(conc_level) $(iwlwifiopts) modules
+endef
+
 # Do the actual build, including image and modules
 $(stampdir)/stamp-build-%: target_flavour = $*
 $(stampdir)/stamp-build-%: splopts  = --with-linux=$(CURDIR)
@@ -66,11 +74,13 @@ $(stampdir)/stamp-build-%: zfsopts += --with-spl-obj=$(builddir)/build-$*/spl
 $(stampdir)/stamp-build-%: zfsopts += --prefix=/usr --with-config=kernel
 $(stampdir)/stamp-build-%: bldimg = $(call custom_override,build_image,$*)
 $(stampdir)/stamp-build-%: enable_zfs = $(call custom_override,do_zfs,$*)
+$(stampdir)/stamp-build-%: iwlwifiopts = KLIB_BUILD=$(builddir)/build-$*
 $(stampdir)/stamp-build-%: $(stampdir)/stamp-prepare-%
 	@echo Debug: $@ build_image $(build_image) bldimg $(bldimg)
 	$(build_cd) $(kmake) $(build_O) $(conc_level) $(bldimg) modules $(if $(filter true,$(do_dtbs)),dtbs)
 
 	$(if $(filter true,$(enable_zfs)),$(call build_zfs))
+	$(call build_backport-iwlwifi)
 
 	@touch $@
 
@@ -79,6 +89,11 @@ define install_zfs =
 		$(kmake) -C $(builddir)/build-$* SUBDIRS=`pwd` modules_install $(splopts)
 	cd $(builddir)/build-$*/zfs/module; \
 		$(kmake) -C $(builddir)/build-$* SUBDIRS=`pwd` modules_install $(zfsopts)
+endef
+
+define install_backport-iwlwifi =
+	cd $(builddir)/build-$*/backport-iwlwifi; \
+		$(kmake) -C $(builddir)/build-$* M=`pwd` modules_install $(iwlwifiopts)
 endef
 
 # Install the finished build
@@ -105,6 +120,8 @@ install-%: splopts += INSTALL_MOD_PATH=$(pkgdir)/
 install-%: splopts += INSTALL_MOD_DIR=kernel/zfs
 install-%: splopts += $(conc_level)
 install-%: zfsopts  = $(splopts)
+install-%: iwlwifiopts  = INSTALL_MOD_DIR=updates
+install-%: iwlwifiopts += INSTALL_MOD_PATH=$(pkgdir)/
 install-%: checks-%
 	@echo Debug: $@ kernel_file $(kernel_file) kernfile $(kernfile) install_file $(install_file) instfile $(instfile)
 	dh_testdir
@@ -164,6 +181,7 @@ endif
 		INSTALL_FW_PATH=$(pkgdir)/lib/firmware/$(abi_release)-$*
 
 	$(if $(filter true,$(enable_zfs)),$(call install_zfs))
+	$(call install_backport-iwlwifi)
 
 	#
 	# Build module blacklists:
