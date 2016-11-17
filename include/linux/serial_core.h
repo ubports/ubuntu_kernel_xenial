@@ -277,7 +277,6 @@ enum uart_pm_state {
 struct uart_state {
 	struct tty_port		port;
 
-	enum uart_pm_state	pm_state;
 	struct circ_buf		xmit;
 
 	struct uart_port	*uart_port;
