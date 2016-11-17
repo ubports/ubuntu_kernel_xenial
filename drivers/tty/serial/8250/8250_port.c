@@ -2895,6 +2895,12 @@ int serial8250_console_setup(struct uart_port *port, char *options, bool probe)
 	else if (probe)
 		baud = probe_baud(port);
 
+	/* At early stage device is not created yet, we can't do PM */
+	if (port->dev) {
+		/* Prevent all kind of power management of this port */
+		pm_runtime_get_noresume(port->dev);
+	}
+
 	return uart_set_options(port, port->cons, baud, parity, bits, flow);
 }
 
