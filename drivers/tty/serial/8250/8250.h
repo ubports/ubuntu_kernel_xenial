@@ -118,6 +118,9 @@ struct uart_8250_port *serial8250_get_port(int line);
 void serial8250_rpm_get(struct uart_8250_port *p);
 void serial8250_rpm_put(struct uart_8250_port *p);
 
+void serial8250_rpm_get_tx(struct uart_8250_port *p);
+void serial8250_rpm_put_tx(struct uart_8250_port *p);
+
 #if defined(__alpha__) && !defined(CONFIG_PCI)
 /*
  * Digital did something really horribly wrong with the OUT1 and OUT2
