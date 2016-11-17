@@ -37,8 +37,6 @@ struct plat_serial8250_port {
 			               struct ktermios *new,
 			               struct ktermios *old);
 	int		(*handle_irq)(struct uart_port *);
-	void		(*pm)(struct uart_port *, unsigned int state,
-			      unsigned old);
 	void		(*handle_break)(struct uart_port *);
 };
 
