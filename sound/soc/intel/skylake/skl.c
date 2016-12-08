@@ -117,7 +117,9 @@ static irqreturn_t skl_interrupt(int irq, void *dev_id)
 {
 	struct hdac_ext_bus *ebus = dev_id;
 	struct hdac_bus *bus = ebus_to_hbus(ebus);
+	u32 mask, int_enable;
 	u32 status;
+	int ret;
 
 	if (!pm_runtime_active(bus->dev))
 		return IRQ_NONE;
@@ -138,21 +140,40 @@ static irqreturn_t skl_interrupt(int irq, void *dev_id)
 		snd_hdac_chip_writeb(bus, RIRBSTS, RIRB_INT_MASK);
 	}
 
-	spin_unlock(&bus->reg_lock);
 
-	return snd_hdac_chip_readl(bus, INTSTS) ? IRQ_WAKE_THREAD : IRQ_HANDLED;
+	mask = (0x1 << ebus->num_streams) - 1;
+
+	status = snd_hdac_chip_readl(bus, INTSTS);
+	status &= mask;
+	if (status) {
+		/* Disable stream interrupts; Re-enable in bottom half */
+		int_enable = snd_hdac_chip_readl(bus, INTCTL);
+		snd_hdac_chip_writel(bus, INTCTL, (int_enable & (~mask)));
+		ret = IRQ_WAKE_THREAD;
+	} else
+		ret = IRQ_HANDLED;
+
+	spin_unlock(&bus->reg_lock);
+	return ret;
 }
 
 static irqreturn_t skl_threaded_handler(int irq, void *dev_id)
 {
 	struct hdac_ext_bus *ebus = dev_id;
 	struct hdac_bus *bus = ebus_to_hbus(ebus);
+	u32 mask, int_enable;
 	u32 status;
-
+	unsigned long flags;
 	status = snd_hdac_chip_readl(bus, INTSTS);
 
 	snd_hdac_bus_handle_stream_irq(bus, status, skl_stream_update);
 
+	/* Re-enable stream interrupts */
+	mask = (0x1 << ebus->num_streams) - 1;
+	spin_lock_irqsave(&bus->reg_lock, flags);
+	int_enable = snd_hdac_chip_readl(bus, INTCTL);
+	snd_hdac_chip_writel(bus, INTCTL, (int_enable | mask));
+	spin_unlock_irqrestore(&bus->reg_lock, flags);
 	return IRQ_HANDLED;
 }
 
@@ -160,7 +181,7 @@ static int skl_acquire_irq(struct hdac_ext_bus *ebus, int do_disconnect)
 {
 	struct skl *skl = ebus_to_skl(ebus);
 	struct hdac_bus *bus = ebus_to_hbus(ebus);
-	int ret;
+	int ret =0;
 
 	ret = request_threaded_irq(skl->pci->irq, skl_interrupt,
 			skl_threaded_handler,
@@ -536,7 +557,6 @@ static int skl_first_init(struct hdac_ext_bus *ebus)
 	int err;
 	unsigned short gcap;
 	int cp_streams, pb_streams, start_idx;
-
 	err = pci_request_regions(pci, "Skylake HD audio");
 	if (err < 0)
 		return err;
@@ -592,6 +612,7 @@ static int skl_first_init(struct hdac_ext_bus *ebus)
 
 	if (IS_ENABLED(CONFIG_SND_SOC_HDAC_HDMI)) {
 		err = skl_i915_init(bus);
+
 		if (err < 0)
 			return err;
 	}
@@ -666,7 +687,6 @@ static int skl_probe(struct pci_dev *pci,
 	err = skl_platform_register(bus->dev);
 	if (err < 0)
 		goto out_dmic_free;
-
 	/* create codec instances */
 	err = skl_codec_create(ebus);
 	if (err < 0)
