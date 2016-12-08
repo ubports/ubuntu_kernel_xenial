@@ -219,7 +219,6 @@ static int skl_be_prepare(struct snd_pcm_substream *substream,
 	mconfig = skl_tplg_be_get_cpr_module(dai, substream->stream);
 	if (mconfig == NULL)
 		return -EINVAL;
-
 	return skl_dsp_set_dma_control(ctx, mconfig);
 }
 
@@ -227,11 +226,14 @@ static int skl_pcm_prepare(struct snd_pcm_substream *substream,
 		struct snd_soc_dai *dai)
 {
 	struct hdac_ext_stream *stream = get_hdac_ext_stream(substream);
+	struct skl *skl = get_skl_ctx(dai->dev);
 	unsigned int format_val;
 	int err;
+	struct skl_module_cfg *mconfig;
 
 	dev_dbg(dai->dev, "%s: %s\n", __func__, dai->name);
 
+	mconfig = skl_tplg_fe_get_cpr_module(dai, substream->stream);
 	format_val = skl_get_format(substream, dai);
 	dev_dbg(dai->dev, "stream_tag=%d formatvalue=%d\n",
 				hdac_stream(stream)->stream_tag, format_val);
@@ -338,7 +340,6 @@ static int skl_be_hw_params(struct snd_pcm_substream *substream,
 				struct snd_soc_dai *dai)
 {
 	struct skl_pipe_params p_params = {0};
-
 	p_params.s_fmt = snd_pcm_format_width(params_format(params));
 	p_params.ch = params_channels(params);
 	p_params.s_freq = params_rate(params);
@@ -520,6 +521,8 @@ static int skl_link_pcm_prepare(struct snd_pcm_substream *substream,
 	unsigned int format_val = 0;
 	struct skl_dma_params *dma_params;
 	struct snd_soc_dai *codec_dai = rtd->codec_dai;
+	struct skl *skl = get_skl_ctx(dai->dev);
+	struct skl_module_cfg *mconfig = NULL;
 	struct hdac_ext_link *link;
 
 	dma_params  = (struct skl_dma_params *)
@@ -536,6 +539,7 @@ static int skl_link_pcm_prepare(struct snd_pcm_substream *substream,
 	snd_hdac_ext_bus_link_power_up(link);
 	snd_hdac_ext_link_stream_reset(link_dev);
 
+	mconfig = skl_tplg_be_get_cpr_module(dai, substream->stream);
 	snd_hdac_ext_link_stream_setup(link_dev, format_val);
 
 	snd_hdac_ext_link_set_stream_id(link, hdac_stream(link_dev)->stream_tag);
@@ -819,6 +823,17 @@ static struct snd_soc_dai_driver skl_platform_dai[] = {
 	},
 },
 {
+	.name = "DMIC23 Pin",
+	.ops = &skl_dmic_dai_ops,
+	.capture = {
+		.stream_name = "DMIC23 Rx",
+		.channels_min = HDA_MONO,
+		.channels_max = HDA_QUAD,
+		.rates = SNDRV_PCM_RATE_48000 | SNDRV_PCM_RATE_16000,
+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
+	},
+},
+{
 	.name = "HD-Codec Pin",
 	.ops = &skl_link_dai_ops,
 	.playback = {
@@ -954,7 +969,6 @@ static int skl_get_delay_from_lpib(struct hdac_ext_bus *ebus,
 		delay = pos - lpib_pos;
 	else
 		delay = lpib_pos - pos;
-
 	if (delay < 0) {
 		if (delay >= hstream->delay_negative_threshold)
 			delay = 0;
@@ -966,12 +980,12 @@ static int skl_get_delay_from_lpib(struct hdac_ext_bus *ebus,
 		delay = 0;
 
 	if (delay >= hstream->period_bytes) {
-		dev_info(bus->dev,
+		/* The following line add extra delay to ring buffer updates, remove it */
+		/*dev_info(bus->dev,
 			 "Unstable LPIB (%d >= %d); disabling LPIB delay counting\n",
-			 delay, hstream->period_bytes);
+			 delay, hstream->period_bytes);*/
 		delay = 0;
 	}
-
 	return bytes_to_frames(substream->runtime, delay);
 }
 
@@ -1106,13 +1120,44 @@ static int skl_pcm_new(struct snd_soc_pcm_runtime *rtd)
 	return retval;
 }
 
+
+static int skl_populate_modules(struct skl *skl)
+{
+	struct skl_pipeline *p;
+	struct skl_pipe_module *m;
+	struct snd_soc_dapm_widget *w;
+	struct skl_module_cfg *mconfig;
+	int ret;
+
+	list_for_each_entry(p, &skl->ppl_list, node) {
+		list_for_each_entry(m, &p->pipe->w_list, node) {
+			w = m->w;
+			mconfig = w->priv;
+			ret = snd_skl_get_module_info(skl->skl_sst, mconfig);
+			if (ret < 0) {
+				dev_err(skl->skl_sst->dev,
+					"query module info failed:%d\n", ret);
+				goto err;
+			}
+		}
+	}
+err:
+	return ret;
+}
+
+
 static int skl_platform_soc_probe(struct snd_soc_platform *platform)
 {
 	struct hdac_ext_bus *ebus = dev_get_drvdata(platform->dev);
 
+	int ret = 0;
+	struct skl *skl = ebus_to_skl(ebus);
 	if (ebus->ppcap)
-		return skl_tplg_init(platform, ebus);
+		ret = skl_tplg_init(platform, ebus);
+	if (ret)
+		return ret;
 
+	skl_populate_modules(skl);
 	return 0;
 }
 static struct snd_soc_platform_driver skl_platform_drv  = {
@@ -1133,7 +1178,6 @@ int skl_platform_register(struct device *dev)
 	struct skl *skl = ebus_to_skl(ebus);
 
 	INIT_LIST_HEAD(&skl->ppl_list);
-
 	ret = snd_soc_register_platform(dev, &skl_platform_drv);
 	if (ret) {
 		dev_err(dev, "soc platform registration failed %d\n", ret);

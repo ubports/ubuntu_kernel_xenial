@@ -28,11 +28,6 @@
 /* FW Extended Manifest Header id = $AE1 */
 #define SKL_EXT_MANIFEST_HEADER_MAGIC   0x31454124
 
-struct skl_dfw_module_mod {
-	char name[100];
-	struct skl_dfw_module skl_dfw_mod;
-};
-
 struct UUID {
 	u8 id[16];
 };
@@ -99,10 +94,15 @@ struct adsp_fw_hdr {
 	u32 load_offset;
 } __packed;
 
+#define MAX_INSTANCE_BUFF 2
+
 struct uuid_module {
 	uuid_le uuid;
 	int id;
 	int is_loadable;
+	int max_instance;
+	u64 pvt_id[MAX_INSTANCE_BUFF];
+	int *instance_id;
 
 	struct list_head list;
 };
@@ -115,19 +115,26 @@ struct skl_ext_manifest_hdr {
 	u32 entries;
 };
 
-int snd_skl_get_module_info(struct skl_sst *ctx, u8 *uuid,
-			struct skl_dfw_module *dfw_config)
+int snd_skl_get_module_info(struct skl_sst *ctx, struct skl_module_cfg *mconfig)
 {
 	struct uuid_module *module;
 	uuid_le *uuid_mod;
 
-	uuid_mod = (uuid_le *)uuid;
+	uuid_mod = (uuid_le *)mconfig->guid;
+
+	if (list_empty(&ctx->uuid_list)) {
+		dev_err(ctx->dev, "Module list is empty\n");
+		return -EINVAL;
+	}
 
 	list_for_each_entry(module, &ctx->uuid_list, list) {
-		if (uuid_le_cmp(*uuid_mod, module->uuid) == 0) {
-			dfw_config->module_id = module->id;
-			dfw_config->is_loadable = module->is_loadable;
+		dev_dbg(ctx->dev,
+			"uuid_tplg :%pUL   uuid_fw:%pUL\n",
+			uuid_mod, &module->uuid );
 
+		if (uuid_le_cmp(*uuid_mod, module->uuid) == 0) {
+			mconfig->id.module_id = module->id;
+			mconfig->is_loadable = module->is_loadable;
 			return 0;
 		}
 	}
@@ -135,6 +142,219 @@ int snd_skl_get_module_info(struct skl_sst *ctx, u8 *uuid,
 	return -EINVAL;
 }
 EXPORT_SYMBOL_GPL(snd_skl_get_module_info);
+
+static int skl_get_pvtid_map(struct uuid_module *module, int instance_id)
+{
+	int pvt_id;
+
+	for (pvt_id = 0; pvt_id < module->max_instance; pvt_id++) {
+		if (module->instance_id[pvt_id] == instance_id)
+			return pvt_id;
+	}
+	return -EINVAL;
+}
+
+int skl_get_pvt_instance_id_map(struct skl_sst *ctx,
+				int module_id, int instance_id)
+{
+	struct uuid_module *module;
+
+	list_for_each_entry(module, &ctx->uuid_list, list) {
+		if (module->id == module_id)
+			return skl_get_pvtid_map(module, instance_id);
+	}
+
+	return -EINVAL;
+}
+EXPORT_SYMBOL_GPL(skl_get_pvt_instance_id_map);
+
+static inline int skl_getid_32(struct uuid_module *module, u64 *val,
+				int word1_mask, int word2_mask)
+{
+	int index, max_inst, pvt_id;
+	u32 mask_val;
+
+	max_inst =  module->max_instance;
+	mask_val = (u32)(*val >> word1_mask);
+	if (mask_val != 0xffffffff) {
+		index = ffz(mask_val);
+		pvt_id = index + word1_mask + word2_mask;
+		if (pvt_id <= (max_inst - 1)) {
+			*val |= 1 << (index + word1_mask);
+			return pvt_id;
+		}
+	}
+
+	return -EINVAL;
+}
+
+static inline int skl_pvtid_128(struct uuid_module *module)
+{
+	int j, i, word1_mask, word2_mask = 0, pvt_id;
+
+	for (j = 0; j < MAX_INSTANCE_BUFF; j++) {
+		word1_mask = 0;
+
+		for (i = 0; i < 2; i++) {
+			pvt_id = skl_getid_32(module, &module->pvt_id[j],
+						word1_mask, word2_mask);
+			if (pvt_id >= 0)
+				return pvt_id;
+
+			word1_mask += 32;
+			if ((word1_mask + word2_mask) >= module->max_instance)
+				return -EINVAL;
+		}
+
+		word2_mask += 64;
+		if (word2_mask >= module->max_instance)
+			return -EINVAL;
+	}
+
+	return -EINVAL;
+}
+
+/**
+ * skl_get_pvt_id: generate a private id for use as module id
+ *
+ * @ctx: driver context
+ * @mconfig: module configuration data
+ *
+ * This generates a 128 bit private unique id for a module TYPE so that
+ * module instance is unique
+ */
+int skl_get_pvt_id(struct skl_sst *ctx, struct skl_module_cfg *mconfig)
+{
+	struct uuid_module *module;
+	uuid_le *uuid_mod;
+	int pvt_id;
+
+	uuid_mod = (uuid_le *)mconfig->guid;
+
+	list_for_each_entry(module, &ctx->uuid_list, list) {
+		if (uuid_le_cmp(*uuid_mod, module->uuid) == 0) {
+			pvt_id = skl_pvtid_128(module);
+			if (pvt_id >= 0) {
+				module->instance_id[pvt_id] =
+						mconfig->id.instance_id;
+				return pvt_id;
+			}
+		}
+	}
+
+	return -EINVAL;
+}
+EXPORT_SYMBOL_GPL(skl_get_pvt_id);
+
+/**
+ * skl_put_pvt_id: free up the private id allocated
+ *
+ * @ctx: driver context
+ * @mconfig: module configuration data
+ *
+ * This frees a 128 bit private unique id previously generated
+ */
+int skl_put_pvt_id(struct skl_sst *ctx, struct skl_module_cfg *mconfig)
+{
+	int i;
+	uuid_le *uuid_mod;
+	struct uuid_module *module;
+
+	uuid_mod = (uuid_le *)mconfig->guid;
+	list_for_each_entry(module, &ctx->uuid_list, list) {
+		if (uuid_le_cmp(*uuid_mod, module->uuid) == 0) {
+
+			if (mconfig->id.pvt_id != 0)
+				i = (mconfig->id.pvt_id) / 64;
+			else
+				i = 0;
+
+			module->pvt_id[i] &= ~(1 << (mconfig->id.pvt_id));
+			mconfig->id.pvt_id = -1;
+			return 0;
+		}
+	}
+
+	return -EINVAL;
+}
+EXPORT_SYMBOL_GPL(skl_put_pvt_id);
+
+/*
+ * Parse the firmware binary to get the UUID, module id
+ * and loadable flags
+ */
+/*int snd_skl_parse_uuids(struct sst_dsp *ctx, const struct firmware *fw,
+			unsigned int offset, int index)
+{
+	struct adsp_fw_hdr *adsp_hdr;
+	struct adsp_module_entry *mod_entry;
+	int i, num_entry, size;
+	uuid_le *uuid_bin;
+	const char *buf;
+	struct skl_sst *skl = ctx->thread_context;
+	struct uuid_module *module;
+	struct firmware stripped_fw;
+	unsigned int safe_file;
+
+	stripped_fw.data = fw->data;
+	stripped_fw.size = fw->size;
+
+	skl_dsp_strip_extended_manifest(&stripped_fw);
+
+	buf = stripped_fw.data;
+
+	safe_file = sizeof(*adsp_hdr) + offset;
+	if (stripped_fw.size <= safe_file) {
+		dev_err(ctx->dev, "Small fw file size, No space for hdr\n");
+		return -EINVAL;
+	}
+
+	adsp_hdr = (struct adsp_fw_hdr *)(buf + offset);
+
+	safe_file += adsp_hdr->len + sizeof(*mod_entry);
+	if (stripped_fw.size <= safe_file) {
+		dev_err(ctx->dev, "Small fw file size, No module entry\n");
+		return -EINVAL;
+	}
+
+	mod_entry = (struct adsp_module_entry *)
+		(buf + offset + adsp_hdr->len);
+
+	num_entry = adsp_hdr->num_modules;
+
+	safe_file += num_entry * sizeof(*mod_entry);
+	if (stripped_fw.size <= safe_file) {
+		dev_err(ctx->dev, "Small fw file size, No modules\n");
+		return -EINVAL;
+	}
+
+
+
+	for (i = 0; i < num_entry; i++, mod_entry++) {
+		module = kzalloc(sizeof(*module), GFP_KERNEL);
+		if (!module)
+			return -ENOMEM;
+
+		uuid_bin = (uuid_le *)mod_entry->uuid.id;
+		memcpy(&module->uuid, uuid_bin, sizeof(module->uuid));
+
+		module->id = (i | (index << 12));
+		module->is_loadable = mod_entry->type.load_type;
+		module->max_instance = mod_entry->instance_max_count;
+		size = sizeof(int) * mod_entry->instance_max_count;
+		module->instance_id = devm_kzalloc(ctx->dev, size, GFP_KERNEL);
+		if (!module->instance_id)
+			return -ENOMEM;
+
+		list_add_tail(&module->list, &skl->uuid_list);
+
+		dev_dbg(ctx->dev,
+			"Adding uuid :%pUL   mod id: %d  Loadable: %d\n",
+			&module->uuid, module->id, module->is_loadable);
+	}
+
+	return 0;
+}*/
 
 /*
  * Parse the firmware binary to get the UUID, module id
@@ -144,7 +364,7 @@ int snd_skl_parse_uuids(struct sst_dsp *ctx, unsigned int offset)
 {
 	struct adsp_fw_hdr *adsp_hdr;
 	struct adsp_module_entry *mod_entry;
-	int i, num_entry;
+	int i, num_entry, size;
 	uuid_le *uuid_bin;
 	const char *buf;
 	struct skl_sst *skl = ctx->thread_context;
@@ -207,6 +427,11 @@ int snd_skl_parse_uuids(struct sst_dsp *ctx, unsigned int offset)
 
 		module->id = i;
 		module->is_loadable = mod_entry->type.load_type;
+		module->max_instance = mod_entry->instance_max_count;
+		size = sizeof(int) * mod_entry->instance_max_count;
+		module->instance_id = devm_kzalloc(ctx->dev, size, GFP_KERNEL);
+		if (!module->instance_id)
+			return -ENOMEM;
 
 		list_add_tail(&module->list, &skl->uuid_list);
 
