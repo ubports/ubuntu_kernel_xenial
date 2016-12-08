@@ -272,8 +272,7 @@ static const struct snd_soc_dapm_route mrgfld_wm8998_map[] = {
 	{"Ext Spk", NULL, "SPKOUTRN"},
 
 	/*Earpiece*/
-	{ "EP", NULL, "EPOUTN" },
-	{ "EP", NULL, "EPOUTP" },
+	{ "EP", NULL, "EPOUT" },
 
 	{"IN3L", NULL, "DMIC"},
 	{"IN3R", NULL, "DMIC"},
@@ -385,6 +384,17 @@ static int mrgfld_florida_codec_fixup(struct snd_soc_pcm_runtime *rtd,
 	return 0;
 }
 
+static int mrgfld_ssp_florida_trigger(struct snd_pcm_substream *substream, int index)
+{
+	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+	struct snd_soc_dai *florida_dai= rtd->codec_dai;
+
+	if (!strcmp(florida_dai->name, "wm8998-aif1"))
+		mrgfld_florida_set_codec_clk(rtd->codec, CODEC_IN_MCLK1);
+
+	return 0;
+}
+
 static int mrgfld_ssp_florida_hw_params(struct snd_pcm_substream *substream,
 	struct snd_pcm_hw_params *params)
 {
@@ -414,6 +424,7 @@ static int mrgfld_ssp_florida_hw_params(struct snd_pcm_substream *substream,
 
 static struct snd_soc_ops mrgfld_ssp_florida_ops = {
 	.hw_params =  mrgfld_ssp_florida_hw_params,
+	.trigger = mrgfld_ssp_florida_trigger,
 };
 
 struct snd_soc_dai_link mrgfld_florida_msic_dailink[] = {
@@ -499,6 +510,7 @@ struct snd_soc_dai_link mrgfld_wm8998_msic_dailink[] = {
 		.codec_name = "wm8998-codec",
 		.codec_dai_name = "wm8998-aif1",
 		.be_hw_params_fixup = mrgfld_florida_codec_fixup,
+		.ops = &mrgfld_ssp_florida_ops,
 		.no_pcm = 1,
 		.dpcm_playback = 1,
 		.dpcm_capture = 1,
@@ -571,7 +583,6 @@ static int snd_mrgfld_florida_mc_probe(struct platform_device *pdev)
 {
 	is_codec8998 = true;
 	snd_soc_card_wm8998_mrgfld.dev = &pdev->dev;
-
 	return devm_snd_soc_register_card(&pdev->dev, &snd_soc_card_wm8998_mrgfld);
 }
 
