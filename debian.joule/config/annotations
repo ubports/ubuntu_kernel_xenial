@@ -6506,8 +6506,8 @@ CONFIG_USB_HCD_BCMA                             note<USB_{O,E}HCI_HCD_PLATFORM m
 CONFIG_USB_HCD_SSB                              note<USB_{O,E}HCI_HCD_PLATFORM must be off on omap>
 
 # Menu: Device Drivers >> USB support >> Support for Host-side USB >> DesignWare USB2 DRD Core Support
-CONFIG_USB_DWC2                                 policy<{'amd64': 'y', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
-CONFIG_USB_DWC2_PCI                             policy<{'amd64': 'y', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
+CONFIG_USB_DWC2                                 policy<{'amd64': 'm', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
+CONFIG_USB_DWC2_PCI                             policy<{'amd64': 'm', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
 CONFIG_USB_DWC2_DEBUG                           policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
 CONFIG_USB_DWC2_TRACK_MISSED_SOFS               policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
 
@@ -6517,17 +6517,13 @@ CONFIG_USB_DWC2_PERIPHERAL                      policy<{'armhf': 'n'}>
 CONFIG_USB_DWC2_DUAL_ROLE                       policy<{'armhf': 'n'}>
 
 # Menu: Device Drivers >> USB support >> Support for Host-side USB >> DesignWare USB3 DRD Core Support
-CONFIG_USB_DWC3                                 policy<{'amd64': 'm', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
-CONFIG_USB_DWC3_ULPI                            policy<{'amd64': 'y', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
-CONFIG_USB_DWC3_OMAP                            policy<{'armhf': 'm'}>
-CONFIG_USB_DWC3_EXYNOS                          policy<{'armhf': 'm'}>
+CONFIG_USB_DWC3                                 policy<{'amd64': 'y', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
 CONFIG_USB_DWC3_PCI                             policy<{'amd64': 'm', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
-CONFIG_USB_DWC3_QCOM                            policy<{'arm64': 'm', 'armhf': 'm'}>
 
 # Menu: Device Drivers >> USB support >> Support for Host-side USB >> DesignWare USB3 DRD Core Support >> DWC3 Mode Selection
 CONFIG_USB_DWC3_HOST                            policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
-CONFIG_USB_DWC3_GADGET                          policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
-CONFIG_USB_DWC3_DUAL_ROLE                       policy<{'amd64': 'y', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
+CONFIG_USB_DWC3_GADGET                          policy<{'amd64': 'y', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
+CONFIG_USB_DWC3_DUAL_ROLE                       policy<{'amd64': 'n', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
 
 # Menu: Device Drivers >> USB support >> Support for Host-side USB >> EHCI HCD (USB 2.0) support
 CONFIG_USB_EHCI_HCD                             policy<{'amd64': 'y', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
@@ -6688,14 +6684,14 @@ CONFIG_USBIP_DEBUG                              policy<{'amd64': 'n', 'arm64': '
 
 # Menu: Device Drivers >> USB support >> Support for Host-side USB >> xHCI HCD (USB 3.0) support
 CONFIG_USB_XHCI_HCD                             policy<{'amd64': 'y', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
-CONFIG_USB_XHCI_PLATFORM                        policy<{'amd64': 'm', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
+CONFIG_USB_XHCI_PLATFORM                        policy<{'amd64': 'y', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
 CONFIG_USB_XHCI_MVEBU                           policy<{'armhf': 'm'}>
 CONFIG_USB_XHCI_RCAR                            policy<{'armhf': 'm'}>
 #
 CONFIG_USB_XHCI_HCD                             note<ensures USB 2.0/1.1 probe ordering> flag<REVIEW>
 
 # Menu: Device Drivers >> USB support >> USB Gadget Support
-CONFIG_USB_GADGET                               policy<{'amd64': 'm', 'arm64': 'm', 'armhf': 'y', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
+CONFIG_USB_GADGET                               policy<{'amd64': 'y', 'arm64': 'm', 'armhf': 'y', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
 CONFIG_USB_GADGET_DEBUG                         policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
 CONFIG_USB_GADGET_DEBUG_FILES                   policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
 CONFIG_USB_GADGET_DEBUG_FS                      policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
@@ -6719,7 +6715,7 @@ CONFIG_USB_G_PRINTER                            policy<{'amd64': 'm', 'arm64': '
 CONFIG_USB_CDC_COMPOSITE                        policy<{'amd64': 'm', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
 CONFIG_USB_G_NOKIA                              policy<{'amd64': 'm', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
 CONFIG_USB_G_ACM_MS                             policy<{'amd64': 'm', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
-CONFIG_USB_G_MULTI                              policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'm', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
+CONFIG_USB_G_MULTI                              policy<{'amd64': 'm', 'arm64': 'n', 'armhf': 'm', 'i386': 'n', 'powerpc': 'n', 'ppc64el': 'n'}>
 CONFIG_USB_G_MULTI_RNDIS                        policy<{'armhf': 'y'}>
 CONFIG_USB_G_MULTI_CDC                          policy<{'armhf': 'y'}>
 CONFIG_USB_G_HID                                policy<{'amd64': 'm', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
