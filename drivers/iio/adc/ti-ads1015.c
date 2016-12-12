@@ -21,6 +21,7 @@
 #include <linux/pm_runtime.h>
 #include <linux/mutex.h>
 #include <linux/delay.h>
+#include <linux/acpi.h>
 
 #include <linux/i2c/ads1015.h>
 
@@ -568,11 +569,23 @@ static void ads1015_get_channels_config(struct i2c_client *client)
 	}
 }
 
+static const int ads1015_match_acpi_device(struct device *dev)
+{
+        const struct acpi_device_id *id;
+
+        id = acpi_match_device(dev->driver->acpi_match_table, dev);
+        if (!id)
+                return 0;
+
+        return id->driver_data;
+}
+
 static int ads1015_probe(struct i2c_client *client,
 			 const struct i2c_device_id *id)
 {
 	struct iio_dev *indio_dev;
 	struct ads1015_data *data;
+	int driver_data;
 	int ret;
 
 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
@@ -589,7 +602,13 @@ static int ads1015_probe(struct i2c_client *client,
 	indio_dev->name = ADS1015_DRV_NAME;
 	indio_dev->modes = INDIO_DIRECT_MODE;
 
-	switch (id->driver_data) {
+	if (ACPI_HANDLE(&client->dev)) {
+		driver_data = ads1015_match_acpi_device(&client->dev);
+	} else {
+		driver_data = id->driver_data;
+	}
+
+	switch (driver_data) {
 	case ADS1015:
 		indio_dev->channels = ads1015_channels;
 		indio_dev->num_channels = ARRAY_SIZE(ads1015_channels);
@@ -620,6 +639,7 @@ static int ads1015_probe(struct i2c_client *client,
 		dev_err(&client->dev, "iio triggered buffer setup failed\n");
 		return ret;
 	}
+
 	ret = pm_runtime_set_active(&client->dev);
 	if (ret)
 		goto err_buffer_cleanup;
@@ -687,6 +707,15 @@ static const struct dev_pm_ops ads1015_pm_ops = {
 			   ads1015_runtime_resume, NULL)
 };
 
+#ifdef CONFIG_ACPI
+static const struct acpi_device_id ads1015_acpi_match[] = {
+	{"ADS1015", ADS1015},
+	{"ADS1115", ADS1115},
+	{}
+};
+MODULE_DEVICE_TABLE(acpi, ads1015_acpi_match);
+#endif
+
 static const struct i2c_device_id ads1015_id[] = {
 	{"ads1015", ADS1015},
 	{"ads1115", ADS1115},
@@ -698,6 +727,9 @@ static struct i2c_driver ads1015_driver = {
 	.driver = {
 		.name = ADS1015_DRV_NAME,
 		.pm = &ads1015_pm_ops,
+#ifdef CONFIG_ACPI
+		.acpi_match_table = ACPI_PTR(ads1015_acpi_match),
+#endif
 	},
 	.probe		= ads1015_probe,
 	.remove		= ads1015_remove,
