@@ -736,7 +736,7 @@ CONFIG_SERIAL_8250_DMA                          policy<{'amd64': 'y', 'arm64': '
 CONFIG_SERIAL_8250_PCI                          policy<{'amd64': 'y', 'arm64': 'y', 'armhf': 'y', 'i386': 'y', 'powerpc': 'y', 'ppc64el': 'y'}>
 CONFIG_SERIAL_8250_CS                           policy<{'amd64': 'm', 'i386': 'm', 'powerpc': 'm'}>
 CONFIG_SERIAL_8250_NR_UARTS                     policy<{'amd64': '48', 'arm64': '48', 'armhf': '48', 'i386': '48', 'powerpc': '48', 'ppc64el': '48'}>
-CONFIG_SERIAL_8250_RUNTIME_UARTS                policy<{'amd64': '32', 'arm64': '32', 'armhf': '32', 'i386': '32', 'powerpc': '32', 'ppc64el': '32'}>
+CONFIG_SERIAL_8250_RUNTIME_UARTS                policy<{'amd64': '4', 'arm64': '32', 'armhf': '32', 'i386': '32', 'powerpc': '32', 'ppc64el': '32'}>
 CONFIG_SERIAL_8250_DW                           policy<{'amd64': 'm', 'arm64': 'y', 'armhf': 'm', 'i386': 'm', 'powerpc': 'm', 'ppc64el': 'm'}>
 CONFIG_SERIAL_8250_EM                           policy<{'armhf': 'n'}>
 CONFIG_SERIAL_8250_OMAP                         policy<{'armhf': 'm'}>
