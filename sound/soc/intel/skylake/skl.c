@@ -718,6 +718,14 @@ out_nhlt_free:
 	skl_nhlt_free(skl->nhlt);
 out_free:
 	skl->init_failed = 1;
+	 
+	if (IS_ENABLED(CONFIG_SND_SOC_HDAC_HDMI)) {
+		// make sure display is powered off before
+		// calling skl_free
+		if (bus->i915_power_refcount > 0)
+			snd_hdac_display_power(bus, false);
+	}
+
 	skl_free(ebus);
 
 	return err;
