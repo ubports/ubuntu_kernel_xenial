@@ -4,7 +4,13 @@ linux-gke (4.4.0-1001.1) xenial; urgency=low
 
   * Initial linux-gke packaging based on linux (4.4.0-59.80) xenial
 
- -- Kamal Mostafa <kamal@canonical.com>  Mon, 23 Jan 2017 09:20:42 -0800
+  * Miscellaneous Ubuntu changes
+    - Ubuntu-4.4.0-59.80
+    - [debian] derive indep_hdrs_pkg_name from src_pkg_name
+    - linux-gke packaging
+    - [config] GKE: enable HARDLOCKUP, SOFTLOCKUP, PANIC_ON_OOPS
+
+ -- Kamal Mostafa <kamal@canonical.com>  Thu, 02 Feb 2017 10:25:07 -0800
 
 linux-gke (4.4.0-1000.0) xenial; urgency=low
 
