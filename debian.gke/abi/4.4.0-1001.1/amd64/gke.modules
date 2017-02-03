@@ -389,7 +389,6 @@ ne2k-pci
 netconsole
 netlink_diag
 netrom
-nf_conntrack
 nf_conntrack_amanda
 nf_conntrack_broadcast
 nf_conntrack_ftp
@@ -398,7 +397,6 @@ nf_conntrack_ipv4
 nf_conntrack_ipv6
 nf_conntrack_irc
 nf_conntrack_netbios_ns
-nf_conntrack_netlink
 nf_conntrack_pptp
 nf_conntrack_proto_dccp
 nf_conntrack_proto_gre
@@ -436,12 +434,9 @@ nf_nat_redirect
 nf_nat_sip
 nf_nat_snmp_basic
 nf_nat_tftp
-nfnetlink
 nfnetlink_acct
 nfnetlink_cthelper
 nfnetlink_cttimeout
-nfnetlink_log
-nfnetlink_queue
 nf_reject_ipv4
 nf_reject_ipv6
 nfs
