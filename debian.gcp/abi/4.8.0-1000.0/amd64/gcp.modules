@@ -2597,7 +2597,6 @@ nettel
 netup-unidvb
 netxen_nic
 newtonkbd
-nf_conntrack
 nf_conntrack_amanda
 nf_conntrack_broadcast
 nf_conntrack_ftp
@@ -2606,7 +2605,6 @@ nf_conntrack_ipv4
 nf_conntrack_ipv6
 nf_conntrack_irc
 nf_conntrack_netbios_ns
-nf_conntrack_netlink
 nf_conntrack_pptp
 nf_conntrack_proto_dccp
 nf_conntrack_proto_gre
@@ -2664,12 +2662,9 @@ nfcmrvl_usb
 nfcsim
 nfcwilink
 nfit
-nfnetlink
 nfnetlink_acct
 nfnetlink_cthelper
 nfnetlink_cttimeout
-nfnetlink_log
-nfnetlink_queue
 nfp_netvf
 nfs
 nfs_acl
