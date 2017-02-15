@@ -26,5 +26,9 @@ source "ubuntu/rsi/Kconfig"
 ##
 ##
 ##
+source "ubuntu/opennsl/Kconfig"
+##
+##
+##
 
 endmenu
