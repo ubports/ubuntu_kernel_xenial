@@ -4532,7 +4532,6 @@ virtio-rng
 virtio_blk
 virtio_input
 virtio_net
-virtio_scsi
 virtual
 visor
 visorbus

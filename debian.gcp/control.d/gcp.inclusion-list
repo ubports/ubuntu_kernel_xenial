@@ -155,7 +155,6 @@ drivers/scsi/sd_mod.ko
 drivers/scsi/sr_mod.ko
 drivers/scsi/vmw_pvscsi.ko
 drivers/scsi/hv_storvsc.ko
-drivers/scsi/virtio_scsi.ko
 drivers/scsi/ibmvscsi/*
 drivers/s390/block/xpram.ko
 drivers/target/target_core*.ko
