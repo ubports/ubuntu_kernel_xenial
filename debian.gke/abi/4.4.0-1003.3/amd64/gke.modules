@@ -692,7 +692,6 @@ vhost_net
 vhost_scsi
 video
 virtio-rng
-virtio_scsi
 vmac
 vmw_balloon
 vmw_pvscsi
