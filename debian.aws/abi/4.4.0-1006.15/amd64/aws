@@ -4235,7 +4235,6 @@ EXPORT_SYMBOL vmlinux 0x3bd47085	generic_write_checks
 EXPORT_SYMBOL vmlinux 0x3be3bcb2	pnp_is_active
 EXPORT_SYMBOL vmlinux 0x3bf10a35	PDE_DATA
 EXPORT_SYMBOL vmlinux 0x3bf8d484	request_key
-EXPORT_SYMBOL vmlinux 0x3c0036e9	register_xen_selfballooning
 EXPORT_SYMBOL vmlinux 0x3c06bd7e	key_type_keyring
 EXPORT_SYMBOL vmlinux 0x3c3def3d	devfreq_remove_device
 EXPORT_SYMBOL vmlinux 0x3c3fce39	__local_bh_enable_ip
@@ -5793,7 +5792,6 @@ EXPORT_SYMBOL vmlinux 0x91607d95	set_memory_wb
 EXPORT_SYMBOL vmlinux 0x9166fada	strncpy
 EXPORT_SYMBOL vmlinux 0x91715312	sprintf
 EXPORT_SYMBOL vmlinux 0x9187efa5	pv_mmu_ops
-EXPORT_SYMBOL vmlinux 0x91967e8e	xen_selfballoon_init
 EXPORT_SYMBOL vmlinux 0x919cb9f1	skb_append
 EXPORT_SYMBOL vmlinux 0x91ac822f	vscnprintf
 EXPORT_SYMBOL vmlinux 0x91ae9a4f	swiotlb_sync_sg_for_cpu
