@@ -55,6 +55,7 @@ async_raid6_recov
 async_tx
 async_xor
 atm
+aufs
 auth_rpcgss
 authenc
 authencesn
