@@ -11,9 +11,6 @@
 9pnet_rdma
 9pnet_virtio
 ablk_helper
-acpi_extlog
-acpi_ipmi
-acpi_pad
 act_bpf
 act_connmark
 act_csum
@@ -190,7 +187,6 @@ ebt_stp
 ebt_vlan
 echainiv
 ec_sys
-einj
 em_canid
 em_cmp
 em_ipset
@@ -203,7 +199,6 @@ eql
 esp4
 esp6
 evbug
-fan
 faulty
 fb_sys_fops
 fcrypt
@@ -411,7 +406,6 @@ nf_defrag_ipv4
 nf_defrag_ipv6
 nf_dup_ipv4
 nf_dup_ipv6
-nfit
 nf_log_arp
 nf_log_bridge
 nf_log_common
