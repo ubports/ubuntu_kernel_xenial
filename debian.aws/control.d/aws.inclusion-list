@@ -43,6 +43,8 @@ drivers/input/serio/serport.ko
 drivers/input/joydev.ko
 drivers/input/touchscreen/usbtouchscreen.ko
 drivers/input/misc/xen-kbdfront.ko
+drivers/gpu/drm/drm.ko
+drivers/gpu/drm/drm_kms_helper.ko
 drivers/md/*
 drivers/message/fusion*
 drivers/nvme/host/nvme.ko
