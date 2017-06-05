@@ -4,7 +4,7 @@ linux-gcp (4.8.0-1001.1) xenial; urgency=low
 
   * Initial linux-gcp packaging based on linux-hwe (4.8.0-51.54) xenial
 
- -- Kamal Mostafa <kamal@canonical.com>  Mon, 05 Jun 2017 09:54:40 -0700
+ -- Kamal Mostafa <kamal@canonical.com>  Mon, 05 Jun 2017 10:05:23 -0700
 
 linux-gcp (4.8.0-1000.0) xenial; urgency=low
 
