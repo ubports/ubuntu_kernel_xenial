@@ -8,6 +8,7 @@
 # Remove any files deleted from the orig.
 rm -f 'arch/powerpc/include/asm/book3s/64/hugetlb-radix.h'
 rm -f 'arch/sparc/lib/user_fixup.c'
+rm -f 'drivers/i2c/busses/i2c-octeon.c'
 rm -f 'firmware/acenic/tg1.bin.ihex'
 rm -f 'firmware/acenic/tg2.bin.ihex'
 rm -f 'firmware/adaptec/starfire_rx.bin.ihex'

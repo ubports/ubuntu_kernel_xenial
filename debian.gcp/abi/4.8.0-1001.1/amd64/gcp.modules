@@ -4384,7 +4384,6 @@ uio
 uio_aec
 uio_cif
 uio_dmem_genirq
-uio_hv_generic
 uio_mf624
 uio_netx
 uio_pci_generic
