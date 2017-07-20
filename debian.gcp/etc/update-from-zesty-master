@@ -5,7 +5,7 @@
 # Xenial. When complete you should have a copy of
 # the Raring master branch changelog with the correct release names.
 #
-SOURCE_RELEASE=yakkety
+SOURCE_RELEASE=zesty
 SOURCE_RELEASE_BRANCH=${_SOURCE_RELEASE_BRANCH:=master-next}
 DEBIAN_SOURCE=debian.master
 
