@@ -52,6 +52,7 @@ parts:
     build-packages:
       - cpio
       - libssl-dev
+      - dpkg-dev
   raspiwififw:
     plugin: nil
     source: .
