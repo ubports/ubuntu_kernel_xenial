@@ -1,10 +1,14 @@
-linux-gcp (4.13.0-1001.1) xenial; urgency=low
+linux-gcp (4.13.0-1001.2) xenial; urgency=low
 
-  * Rebase linux-gcp to v4.13 kernel base (LP: #1728085):
+  * Rebase linux-gcp to v4.13 kernel base (LP: #1728085)
     - [Configs] reset configuration to master
-    - [Config] reapply GCP config delta
+    - [Config] reapply GCP configuration overlay
     - update base kernel version
+    - Revert "UBUNTU: [Packaging] Set do_tools_common in common vars"
     - [Config] resync control and d-i with 4.13 master kernel
+    - [Config] ensure common tools is not built
+    - [Config] announce as suitable for GKE and GCP
+    - [Packaging] drop incorrect update-from-* script
 
  -- Andy Whitcroft <apw@canonical.com>  Mon, 23 Oct 2017 10:13:40 +0100
 
