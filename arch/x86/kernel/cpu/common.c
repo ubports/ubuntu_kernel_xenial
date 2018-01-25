@@ -694,6 +694,7 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
 	if (c->cpuid_level >= 0x00000007) {
 		cpuid_count(0x00000007, 0, &eax, &ebx, &ecx, &edx);
 		c->x86_capability[CPUID_7_0_EBX] = ebx;
+		c->x86_capability[CPUID_7_EDX] = edx;
 	}
 
 	/* Extended state features: level 0x0000000d */
