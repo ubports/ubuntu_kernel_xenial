@@ -280,6 +280,13 @@ retpoline_auto:
 	spectre_v2_enabled = mode;
 	pr_info("%s\n", spectre_v2_strings[mode]);
 
+	/* Initialize Indirect Branch Prediction Barrier if supported */
+	if (boot_cpu_has(X86_FEATURE_SPEC_CTRL) ||
+	    boot_cpu_has(X86_FEATURE_AMD_PRED_CMD)) {
+		setup_force_cpu_cap(X86_FEATURE_IBPB);
+		pr_info("Enabling Indirect Branch Prediction Barrier\n");
+	}
+
 	pr_info("Speculation control IBPB %s IBRS %s",
 	        ibpb_supported ? "supported" : "not-supported",
 	        ibrs_supported ? "supported" : "not-supported");
