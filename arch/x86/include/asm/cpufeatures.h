@@ -195,7 +195,6 @@
 
 #define X86_FEATURE_INTEL_PT	( 7*32+15) /* Intel Processor Trace */
 #define X86_FEATURE_RSB_CTXSW	( 7*32+19) /* Fill RSB on context switches */
-#define X86_FEATURE_SPEC_CTRL	( 7*32+20) /* Control Speculation Control */
 #define X86_FEATURE_RETPOLINE	( 7*32+29) /* Generic Retpoline mitigation for Spectre variant 2 */
 #define X86_FEATURE_RETPOLINE_AMD ( 7*32+30) /* AMD Retpoline mitigation for Spectre variant 2 */
 /* Because the ALTERNATIVE scheme is for members of the X86_FEATURE club... */
@@ -281,6 +280,9 @@
 #define X86_FEATURE_AVIC	(15*32+13) /* Virtual Interrupt Controller */
 
 /* Intel-defined CPU features, CPUID level 0x00000007:0 (EDX), word 16 */
+#define X86_FEATURE_SPEC_CTRL		(16*32+26) /* Speculation Control (IBRS + IBPB) */
+#define X86_FEATURE_STIBP		(16*32+27) /* Single Thread Indirect Branch Predictors */
+#define X86_FEATURE_ARCH_CAPABILITIES	(16*32+29) /* IA32_ARCH_CAPABILITIES MSR (Intel) */
 
 /*
  * BUG word(s)
