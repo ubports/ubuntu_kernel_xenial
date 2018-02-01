@@ -359,7 +359,7 @@ static inline int __do_cpuid_ent(struct kvm_cpuid_entry2 *entry, u32 function,
 
 	/* cpuid 7.0.edx */
 	const u32 kvm_supported_7_0_edx_x86_features =
-		F(SPEC_CTRL) | F(SPEC_CTRL_SSBD);
+		F(ARCH_CAPABILITIES) | F(SPEC_CTRL) | F(SPEC_CTRL_SSBD);
 
 	/* cpuid 0xD.1.eax */
 	const u32 kvm_cpuid_D_1_eax_x86_features =
