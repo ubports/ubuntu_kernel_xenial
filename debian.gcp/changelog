@@ -1,6 +1,6 @@
-linux-gcp (4.13.0-1010.13) xenial; urgency=medium
+linux-gcp (4.13.0-1010.14) xenial; urgency=medium
 
-  * linux-gcp: 4.13.0-1010.13 -proposed tracker (LP: #1746905)
+  * linux-gcp: 4.13.0-1010.14 -proposed tracker (LP: #1746905)
   * CVE-2017-5715 (Spectre v2 retpoline)
     - [Config] enable CONFIG_RETPOLINE for gcp kernel
 
