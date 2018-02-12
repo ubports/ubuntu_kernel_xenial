@@ -6448,6 +6448,21 @@ EXPORT_SYMBOL vmlinux 0x00000000	__wait_on_bit_lock
 EXPORT_SYMBOL vmlinux 0x00000000	__wait_on_buffer
 EXPORT_SYMBOL vmlinux 0x00000000	__wake_up
 EXPORT_SYMBOL vmlinux 0x00000000	__wake_up_bit
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_r10
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_r11
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_r12
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_r13
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_r14
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_r15
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_r8
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_r9
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_rax
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_rbp
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_rbx
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_rcx
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_rdi
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_rdx
+EXPORT_SYMBOL vmlinux 0x00000000	__x86_indirect_thunk_rsi
 EXPORT_SYMBOL vmlinux 0x00000000	__xfrm_decode_session
 EXPORT_SYMBOL vmlinux 0x00000000	__xfrm_dst_lookup
 EXPORT_SYMBOL vmlinux 0x00000000	__xfrm_init_state
@@ -10305,7 +10320,6 @@ EXPORT_SYMBOL vmlinux 0x00000000	sockfd_lookup
 EXPORT_SYMBOL vmlinux 0x00000000	soft_cursor
 EXPORT_SYMBOL vmlinux 0x00000000	softnet_data
 EXPORT_SYMBOL vmlinux 0x00000000	sort
-EXPORT_SYMBOL vmlinux 0x00000000	spec_ctrl_mutex
 EXPORT_SYMBOL vmlinux 0x00000000	splice_direct_to_actor
 EXPORT_SYMBOL vmlinux 0x00000000	sprintf
 EXPORT_SYMBOL vmlinux 0x00000000	sscanf
@@ -10375,8 +10389,6 @@ EXPORT_SYMBOL vmlinux 0x00000000	synchronize_irq
 EXPORT_SYMBOL vmlinux 0x00000000	synchronize_net
 EXPORT_SYMBOL vmlinux 0x00000000	sys_close
 EXPORT_SYMBOL vmlinux 0x00000000	sys_tz
-EXPORT_SYMBOL vmlinux 0x00000000	sysctl_ibpb_enabled
-EXPORT_SYMBOL vmlinux 0x00000000	sysctl_ibrs_enabled
 EXPORT_SYMBOL vmlinux 0x00000000	sysctl_max_skb_frags
 EXPORT_SYMBOL vmlinux 0x00000000	sysctl_nf_log_all_netns
 EXPORT_SYMBOL vmlinux 0x00000000	sysctl_optmem_max
@@ -10712,8 +10724,6 @@ EXPORT_SYMBOL vmlinux 0x00000000	up_read
 EXPORT_SYMBOL vmlinux 0x00000000	up_write
 EXPORT_SYMBOL vmlinux 0x00000000	update_devfreq
 EXPORT_SYMBOL vmlinux 0x00000000	update_region
-EXPORT_SYMBOL vmlinux 0x00000000	use_ibpb
-EXPORT_SYMBOL vmlinux 0x00000000	use_ibrs
 EXPORT_SYMBOL vmlinux 0x00000000	user_path_at_empty
 EXPORT_SYMBOL vmlinux 0x00000000	user_path_create
 EXPORT_SYMBOL vmlinux 0x00000000	user_revoke
@@ -17099,7 +17109,6 @@ EXPORT_SYMBOL_GPL virt/lib/irqbypass 0x00000000	irq_bypass_register_producer
 EXPORT_SYMBOL_GPL virt/lib/irqbypass 0x00000000	irq_bypass_unregister_consumer
 EXPORT_SYMBOL_GPL virt/lib/irqbypass 0x00000000	irq_bypass_unregister_producer
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	PageHuge
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	___ptrace_may_access
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__ablkcipher_walk_complete
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__acpi_node_get_property_reference
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__add_pages
@@ -17123,6 +17132,7 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	__blocking_notifier_call_chain
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__bpf_call_base
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__class_create
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__class_register
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	__clear_rsb
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__clk_determine_rate
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__clk_get_flags
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__clk_get_hw
@@ -17160,6 +17170,7 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	__efivar_entry_get
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__efivar_entry_iter
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__fat_fs_error
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__fib_lookup
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	__fill_rsb
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__fput_sync
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__free_iova
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	__fsnotify_inode_delete
