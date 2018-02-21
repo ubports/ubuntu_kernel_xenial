@@ -952,6 +952,8 @@ struct kvm_x86_ops {
 	void (*post_block)(struct kvm_vcpu *vcpu);
 	int (*update_pi_irte)(struct kvm *kvm, unsigned int host_irq,
 			      uint32_t guest_irq, bool set);
+
+	int (*get_msr_feature)(struct kvm_msr_entry *entry);
 };
 
 struct kvm_arch_async_pf {
