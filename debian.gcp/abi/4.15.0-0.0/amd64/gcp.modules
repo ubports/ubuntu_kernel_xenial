@@ -622,7 +622,6 @@ cc2520
 cc770
 cc770_isa
 cc770_platform
-cciss
 ccm
 ccp
 ccp-crypto
@@ -1349,7 +1348,6 @@ gen_probe
 generic
 generic-adc-battery
 generic_bl
-genet
 geneve
 genwqe_card
 gf2k
@@ -1391,11 +1389,9 @@ gpio-dln2
 gpio-dwapb
 gpio-exar
 gpio-f7188x
-gpio-fan
 gpio-generic
 gpio-gpio-mm
 gpio-ich
-gpio-ir-recv
 gpio-it87
 gpio-janz-ttl
 gpio-kempld
@@ -1419,7 +1415,6 @@ gpio-sch
 gpio-sch311x
 gpio-tpic2810
 gpio-tps65086
-gpio-tps65218
 gpio-tps65912
 gpio-twl4030
 gpio-twl6040
@@ -1698,7 +1693,6 @@ hwa-hc
 hwa-rc
 hwmon-vid
 hwpoison-inject
-hwspinlock_core
 hx711
 hx8357
 hyperv-keyboard
@@ -1735,7 +1729,6 @@ i2c-mux-ltc4306
 i2c-mux-mlxcpld
 i2c-mux-pca9541
 i2c-mux-pca954x
-i2c-mux-pinctrl
 i2c-mux-reg
 i2c-nforce2
 i2c-nforce2-s4985
@@ -1898,7 +1891,6 @@ intel_rapl
 intel_soc_dts_iosf
 intel_soc_dts_thermal
 intel_soc_pmic_bxtwc
-intel_soc_pmic_chtwc
 intel_telemetry_core
 intel_telemetry_debugfs
 intel_telemetry_pltdrv
@@ -2012,7 +2004,6 @@ ipw2100
 ipw2200
 ipwireless
 ipx
-ir-hix5hd2
 ir-jvc-decoder
 ir-kbd-i2c
 ir-lirc-codec
@@ -2023,7 +2014,6 @@ ir-rc6-decoder
 ir-sanyo-decoder
 ir-sharp-decoder
 ir-sony-decoder
-ir-spi
 ir-usb
 ir-xmp-decoder
 ir35221
@@ -2946,8 +2936,6 @@ null_blk
 nuvoton-cir
 nv_tco
 nvidiafb
-nvme
-nvme-core
 nvme-fabrics
 nvme-fc
 nvme-loop
@@ -3000,7 +2988,6 @@ osst
 oti6858
 ov2640
 ov5642
-ov6650
 ov7640
 ov7670
 ov772x
@@ -3987,7 +3974,6 @@ snd-seq-virmidi
 snd-serial-u16550
 snd-skl_nau88l25_max98357a
 snd-soc-ac97
-snd-soc-acp-pcm
 snd-soc-adau-utils
 snd-soc-adau1701
 snd-soc-adau1761
@@ -4114,7 +4100,6 @@ snd-soc-sst-firmware
 snd-soc-sst-haswell
 snd-soc-sst-haswell-pcm
 snd-soc-sst-ipc
-snd-soc-sst-match
 snd-soc-sta32x
 snd-soc-sta350
 snd-soc-sti-sas
@@ -4306,7 +4291,6 @@ stmmac-platform
 stowaway
 stp
 streamzap
-strparser
 stts751
 stv0288
 stv0297
@@ -4458,7 +4442,6 @@ ti-tlc4541
 ti_am335x_adc
 ti_am335x_tsc
 ti_am335x_tscadc
-ti_dac7512
 ti_usb_3410_5052
 tifm_7xx1
 tifm_core
@@ -4523,12 +4506,6 @@ tps65086-regulator
 tps65090-charger
 tps65090-regulator
 tps65132-regulator
-tps65217
-tps65217-regulator
-tps65217_bl
-tps65217_charger
-tps65218
-tps65218-pwrbutton
 tps6524x-regulator
 tps6586x-regulator
 tps65910-regulator
@@ -4797,7 +4774,6 @@ vmac
 vmd
 vme_ca91cx42
 vme_fake
-vme_pio2
 vme_tsi148
 vme_user
 vme_vmivme7805
@@ -4836,7 +4812,6 @@ vxge
 vxlan
 vz89x
 w1-gpio
-w1_bq27000
 w1_ds2405
 w1_ds2406
 w1_ds2408
