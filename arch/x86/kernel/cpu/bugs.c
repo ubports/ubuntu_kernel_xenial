@@ -702,8 +702,8 @@ static ssize_t cpu_show_common(struct device *dev, struct device_attribute *attr
 		break;
 
 	case X86_BUG_SPECTRE_V1:
-		if (osb_is_enabled)
-			return sprintf(buf, "Mitigation: OSB (observable speculation barrier, Intel v6)\n");
+		return sprintf(buf, "Mitigation: __user pointer sanitization%s%s\n",
+			       osb_is_enabled ? ", OSB (observable speculation barrier, Intel v6)" : "");
 
 		break;
 
