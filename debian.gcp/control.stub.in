@@ -50,7 +50,7 @@ XS-Testsuite: autopkgtest
 
 Package: SRCPKGNAME-headers-PKGVER-ABINUM
 Build-Profiles: <!stage1>
-Architecture: all
+Architecture: amd64
 Multi-Arch: foreign
 Section: devel
 Priority: optional
@@ -85,4 +85,3 @@ Description: Linux kernel version specific cloud tools for version PKGVER-ABINUM
  version locked tools for cloud tools for version PKGVER-ABINUM on
  =HUMAN=.
  You probably want to install linux-cloud-tools-PKGVER-ABINUM-<flavour>.
-
