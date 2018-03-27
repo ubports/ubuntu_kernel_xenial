@@ -4077,7 +4077,6 @@ vme_tsi148
 vme_user
 vme_vmivme7805
 vmk80xx
-vmxnet3
 vp27smpx
 vport-geneve
 vport-gre
