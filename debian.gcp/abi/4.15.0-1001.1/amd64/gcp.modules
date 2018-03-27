@@ -13,6 +13,7 @@
 8250_dw
 8250_exar
 8250_lpss
+8250_men_mcb
 8250_mid
 8250_moxa
 8255
@@ -56,6 +57,7 @@ acecad
 acenic
 acer-wmi
 acerhdf
+acp_audio_dma
 acpi-als
 acpi_configfs
 acpi_extlog
@@ -276,7 +278,10 @@ alienware-wmi
 alim1535_wdt
 alim7101_wdt
 altera-ci
+altera-cvp
+altera-msgdma
 altera-pr-ip-core
+altera-ps-spi
 altera-stapl
 altera_jtaguart
 altera_ps2
@@ -383,6 +388,7 @@ ath
 ath10k_core
 ath10k_pci
 ath10k_sdio
+ath10k_usb
 ath3k
 ath5k
 ath6kl_core
@@ -476,6 +482,8 @@ bcm87xx
 bcma
 bcma-hcd
 bd6107
+bd9571mwv
+bd9571mwv-regulator
 bdc
 bdc_pci
 be2iscsi
@@ -534,6 +542,7 @@ bq24257_charger
 bq24735-charger
 bq25890_charger
 bq27xxx_battery
+bq27xxx_battery_hdq
 bq27xxx_battery_i2c
 br2684
 br_netfilter
@@ -625,6 +634,7 @@ cc770_platform
 ccm
 ccp
 ccp-crypto
+ccs811
 cdc-acm
 cdc-phonet
 cdc-wdm
@@ -653,6 +663,7 @@ chacha20_generic
 chacha20poly1305
 chaoskey
 charlcd
+chash
 chcr
 chipreg
 chnl_net
@@ -747,6 +758,7 @@ crc4
 crc7
 crc8
 crct10dif-pclmul
+cros_ec_accel_legacy
 cros_ec_baro
 cros_ec_core
 cros_ec_devs
@@ -886,10 +898,13 @@ defxx
 dell-laptop
 dell-rbtn
 dell-smbios
+dell-smbios-smm
+dell-smbios-wmi
 dell-smm-hwmon
 dell-smo8800
 dell-wmi
 dell-wmi-aio
+dell-wmi-descriptor
 dell-wmi-led
 dell_rbu
 denali
@@ -921,6 +936,7 @@ dlci
 dlink-dir685-touchkeys
 dlm
 dln2
+dln2-adc
 dm-bio-prison
 dm-bufio
 dm-cache
@@ -960,6 +976,7 @@ dn_rtmsg
 dnet
 docg3
 docg4
+dp83822
 dp83848
 dp83867
 dpt_i2o
@@ -985,6 +1002,7 @@ ds2780_battery
 ds2781_battery
 ds2782_battery
 ds3000
+ds4424
 ds620
 dsa_core
 dsbr100
@@ -1167,6 +1185,7 @@ et131x
 ethoc
 eurotechwdt
 evbug
+exc3000
 exofs
 extcon-adc-jack
 extcon-arizona
@@ -1183,6 +1202,7 @@ extcon-palmas
 extcon-rt8973a
 extcon-sm5502
 extcon-usb-gpio
+extcon-usbc-cros-ec
 ezusb
 f2fs
 f71805f
@@ -1380,6 +1400,7 @@ gpio-amd8111
 gpio-amdpt
 gpio-arizona
 gpio-axp209
+gpio-bd9571mwv
 gpio-beeper
 gpio-charger
 gpio-crystalcove
@@ -1397,10 +1418,12 @@ gpio-janz-ttl
 gpio-kempld
 gpio-lp3943
 gpio-lp873x
+gpio-max3191x
 gpio-max7300
 gpio-max7301
 gpio-max730x
 gpio-max732x
+gpio-mb86s7x
 gpio-mc33880
 gpio-menz127
 gpio-ml-ioh
@@ -1644,8 +1667,10 @@ hid-wiimote
 hid-xinmo
 hid-zpff
 hid-zydacron
+hideep
 hidp
 hih6130
+hinic
 hio
 hisax
 hisax_fcpcipnp
@@ -1686,6 +1711,7 @@ htu21
 huawei_cdc_ncm
 hv_balloon
 hv_netvsc
+hv_sock
 hv_storvsc
 hv_utils
 hv_vmbus
@@ -1711,6 +1737,7 @@ i2c-amd756
 i2c-amd756-s4882
 i2c-amd8111
 i2c-cbus-gpio
+i2c-cht-wc
 i2c-cros-ec-tunnel
 i2c-designware-pci
 i2c-diolan-u2c
@@ -1783,12 +1810,14 @@ ib_srpt
 ib_ucm
 ib_umad
 ib_uverbs
+ibm-cffps
 ibm_rtl
 ibmaem
 ibmasm
 ibmasr
 ibmpex
 ichxrom
+icp
 icp_multi
 icplus
 ics932s401
@@ -1873,6 +1902,7 @@ intel-smartconnect
 intel-spi
 intel-spi-platform
 intel-vbtn
+intel-wmi-thunderbolt
 intel-xway
 intel_bxt_pmic_thermal
 intel_bxtwc_tmu
@@ -1891,6 +1921,7 @@ intel_rapl
 intel_soc_dts_iosf
 intel_soc_dts_thermal
 intel_soc_pmic_bxtwc
+intel_soc_pmic_chtdc_ti
 intel_telemetry_core
 intel_telemetry_debugfs
 intel_telemetry_pltdrv
@@ -2166,6 +2197,8 @@ lec
 led-class-flash
 leds-88pm860x
 leds-adp5520
+leds-apu
+leds-as3645a
 leds-bd2802
 leds-blinkm
 leds-clevo-mail
@@ -2315,6 +2348,7 @@ lpddr_cmds
 lpfc
 lru_cache
 lrw
+ltc2471
 ltc2485
 ltc2497
 ltc2632
@@ -2415,6 +2449,7 @@ max1619
 max1668
 max17040_battery
 max17042_battery
+max1721x_battery
 max197
 max20751
 max2165
@@ -2422,6 +2457,7 @@ max30100
 max30102
 max3100
 max31722
+max31785
 max31790
 max3421-hcd
 max34440
@@ -2430,6 +2466,7 @@ max517
 max5481
 max5487
 max63xx_wdt
+max6621
 max6639
 max6642
 max6650
@@ -2678,6 +2715,7 @@ mxl111sf-tuner
 mxl301rf
 mxl5005s
 mxl5007t
+mxl5xx
 mxm-wmi
 mxser
 mxuport
@@ -2811,6 +2849,7 @@ nft_fib
 nft_fib_inet
 nft_fib_ipv4
 nft_fib_ipv6
+nft_fib_netdev
 nft_fwd_netdev
 nft_hash
 nft_limit
@@ -2922,9 +2961,11 @@ nozomi
 ns558
 ns83820
 nsc-ircc
+nsh
 ntb
 ntb_hw_idt
 ntb_hw_intel
+ntb_hw_switchtec
 ntb_netdev
 ntb_perf
 ntb_pingpong
@@ -3011,6 +3052,7 @@ palmas_gpadc
 panasonic-laptop
 pandora_bl
 panel
+panel-raspberrypi-touchscreen
 paride
 parkbd
 parman
@@ -3138,11 +3180,14 @@ phy-qcom-usb-hsic
 phy-tahvo
 phy-tusb1210
 physmap
+pi433
 pinctrl-broxton
 pinctrl-cannonlake
+pinctrl-cedarfork
 pinctrl-denverton
 pinctrl-geminilake
 pinctrl-intel
+pinctrl-lewisburg
 pinctrl-mcp23s08
 pinctrl-sunrisepoint
 pistachio-internal-dac
@@ -3197,6 +3242,7 @@ pptp
 pretimeout_panic
 prism2_usb
 processor_thermal_device
+ps2-gpio
 ps2mult
 psample
 psmouse
@@ -3212,6 +3258,7 @@ punit_atom_debug
 pv88060-regulator
 pv88080-regulator
 pv88090-regulator
+pvcalls-front
 pvpanic
 pvrusb2
 pwc
@@ -3225,6 +3272,7 @@ pwm-pca9685
 pwm-regulator
 pwm-twl
 pwm-twl-led
+pwm-vibra
 pwm_bl
 pxa27x_udc
 qat_dh895xcc
@@ -3235,6 +3283,7 @@ qcom-emac
 qcom-spmi-iadc
 qcom-spmi-vadc
 qcom-vadc-common
+qcom_glink_native
 qcom_glink_rpm
 qcom_spmi-regulator
 qcserial
@@ -3315,6 +3364,7 @@ rc-adstech-dvb-t-pci
 rc-alink-dtu-m
 rc-anysee
 rc-apac-viewcomp
+rc-astrometa-t2hybrid
 rc-asus-pc39
 rc-asus-ps3-100
 rc-ati-tv-wonder-hd-600
@@ -3362,6 +3412,8 @@ rc-geekbox
 rc-genius-tvgo-a11mce
 rc-gotview7135
 rc-hauppauge
+rc-hisi-poplar
+rc-hisi-tv-demo
 rc-imon-mce
 rc-imon-pad
 rc-iodata-bctv7e
@@ -3404,6 +3456,7 @@ rc-reddo
 rc-snapstream-firefly
 rc-streamzap
 rc-su3000
+rc-tango
 rc-tbs-nec
 rc-technisat-ts35
 rc-technisat-usb2
@@ -3425,6 +3478,7 @@ rc-videomate-s350
 rc-videomate-tv-pvr
 rc-winfast
 rc-winfast-usbii-deluxe
+rc-zx-irdec
 rc5t583-regulator
 rcuperf
 rdc321x-southbridge
@@ -3440,9 +3494,11 @@ redboot
 redrat3
 reed_solomon
 regmap-spmi
+regmap-w1
 regulator-haptic
 reiserfs
 remoteproc
+repaper
 reset-ti-syscon
 retu-mfd
 retu-pwrbutton
@@ -3450,6 +3506,7 @@ retu_wdt
 rfc1051
 rfc1201
 rfcomm
+rfd77402
 rfd_ftl
 rfkill-gpio
 rio-scan
@@ -3467,8 +3524,10 @@ rmi_core
 rmi_i2c
 rmi_smbus
 rmi_spi
+rmnet
 rndis_host
 rndis_wlan
+rockchip
 rocker
 rocket
 rohm_bu21023
@@ -3636,6 +3695,7 @@ s5h1420
 s5m8767
 s626
 s6e63m0
+s6sy761
 s921
 saa6588
 saa6752hs
@@ -3686,6 +3746,7 @@ sbp_target
 sbs
 sbs-battery
 sbs-charger
+sbs-manager
 sbshc
 sc1200wdt
 sc16is7xx
@@ -3698,6 +3759,7 @@ sch5636
 sch56xx-common
 sch_atm
 sch_cbq
+sch_cbs
 sch_choke
 sch_codel
 sch_drr
@@ -3792,6 +3854,7 @@ sil164
 silead
 sir-dev
 sir_ir
+sirf-audio-codec
 sis-agp
 sis190
 sis5595
@@ -3817,6 +3880,7 @@ slcan
 slicoss
 slip
 slram
+sm3_generic
 sm501
 sm501fb
 sm712fb
@@ -3974,6 +4038,9 @@ snd-seq-virmidi
 snd-serial-u16550
 snd-skl_nau88l25_max98357a
 snd-soc-ac97
+snd-soc-acp-rt5645-mach
+snd-soc-acpi
+snd-soc-acpi-intel-match
 snd-soc-adau-utils
 snd-soc-adau1701
 snd-soc-adau1761
@@ -4006,6 +4073,7 @@ snd-soc-cs42l56
 snd-soc-cs42l73
 snd-soc-cs42xx8
 snd-soc-cs42xx8-i2c
+snd-soc-cs43130
 snd-soc-cs4349
 snd-soc-cs53l30
 snd-soc-da7213
@@ -4055,6 +4123,7 @@ snd-soc-rl6347a
 snd-soc-rt286
 snd-soc-rt298
 snd-soc-rt5514
+snd-soc-rt5514-spi
 snd-soc-rt5616
 snd-soc-rt5631
 snd-soc-rt5640
@@ -4083,6 +4152,7 @@ snd-soc-ssm2602-spi
 snd-soc-ssm4567
 snd-soc-sst-acpi
 snd-soc-sst-atom-hifi2-platform
+snd-soc-sst-baytrail-pcm
 snd-soc-sst-bdw-rt5677-mach
 snd-soc-sst-broadwell
 snd-soc-sst-bxt-da7219_max98357a
@@ -4117,6 +4187,7 @@ snd-soc-tpa6130a2
 snd-soc-ts3a227e
 snd-soc-wm8510
 snd-soc-wm8523
+snd-soc-wm8524
 snd-soc-wm8580
 snd-soc-wm8711
 snd-soc-wm8728
@@ -4248,6 +4319,7 @@ st-nci_spi
 st1232
 st21nfca_hci
 st21nfca_i2c
+st7586
 st95hf
 st_accel
 st_accel_i2c
@@ -4298,8 +4370,10 @@ stv0299
 stv0367
 stv0900
 stv090x
+stv0910
 stv6110
 stv6110x
+stv6111
 stx104
 sundance
 sungem
@@ -4428,6 +4502,7 @@ thmc50
 thunder_bgx
 thunder_xcv
 thunderbolt
+thunderbolt-net
 ti-adc081c
 ti-adc0832
 ti-adc084s021
@@ -4437,6 +4512,7 @@ ti-adc128s052
 ti-adc161s626
 ti-ads1015
 ti-ads7950
+ti-dac082s085
 ti-lmu
 ti-tlc4541
 ti_am335x_adc
@@ -4493,6 +4569,7 @@ tpm_tis_spi
 tpm_vtpm_proxy
 tps40422
 tps51632-regulator
+tps53679
 tps6105x
 tps6105x-regulator
 tps62360-regulator
@@ -4510,6 +4587,7 @@ tps6524x-regulator
 tps6586x-regulator
 tps65910-regulator
 tps65912-regulator
+tps6598x
 tps80031-regulator
 trancevibrator
 trf7970a
@@ -4579,6 +4657,7 @@ typec
 typec_ucsi
 typhoon
 u132-hcd
+uPD60620
 uPD98402
 u_audio
 u_ether
@@ -4706,6 +4785,8 @@ v4l2-flash-led-class
 v4l2-fwnode
 v4l2-mem2mem
 v4l2-tpg
+vboxguest
+vboxsf
 vcan
 vcnl4000
 veml6070
@@ -4760,6 +4841,7 @@ virtio_blk
 virtio_crypto
 virtio_input
 virtio_net
+virtio_rpmsg_bus
 virtual
 visor
 visorbus
@@ -4798,6 +4880,7 @@ vpx3220
 vrf
 vringh
 vsock
+vsock_diag
 vsockmon
 vsxxxaa
 vt1211
@@ -4823,7 +4906,9 @@ w1_ds2438
 w1_ds2760
 w1_ds2780
 w1_ds2781
+w1_ds2805
 w1_ds28e04
+w1_ds28e17
 w1_smem
 w1_therm
 w5100
@@ -5062,5 +5147,6 @@ zr36060
 zr36067
 zr364xx
 zram
+zstd_compress
 zunicode
 zx-tdm
