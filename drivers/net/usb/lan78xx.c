@@ -1575,18 +1575,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
 
 	genphy_config_aneg(phydev);
 
-	/* Workaround to enable PHY interrupt.
-	 * phy_start_interrupts() is API for requesting and enabling
-	 * PHY interrupt. However, USB-to-Ethernet device can't use
-	 * request_irq() called in phy_start_interrupts().
-	 * Set PHY to PHY_HALTED and call phy_start()
-	 * to make a call to phy_enable_interrupts()
-	 */
-	phy_stop(phydev);
-	phy_start(phydev);
-
-	netif_dbg(dev, ifup, dev->net, "phy initialised successfully");
-
 	return 0;
 }
 
@@ -1998,9 +1986,17 @@ static int lan78xx_open(struct net_device *net)
 	if (ret < 0)
 		goto done;
 
-	ret = lan78xx_phy_init(dev);
-	if (ret < 0)
-		goto done;
+	/* Workaround to enable PHY interrupt.
+	 * phy_start_interrupts() is API for requesting and enabling
+	 * PHY interrupt. However, USB-to-Ethernet device can't use
+	 * request_irq() called in phy_start_interrupts().
+	 * Set PHY to PHY_HALTED and call phy_start()
+	 * to make a call to phy_enable_interrupts()
+	 */
+	phy_stop(net->phydev);
+	phy_start(net->phydev);
+
+	netif_dbg(dev, ifup, dev->net, "phy initialised successfully");
 
 	if (of_property_read_bool(dev->udev->dev.of_node,
 				  "microchip,eee-enabled")) {
@@ -2072,9 +2068,8 @@ int lan78xx_stop(struct net_device *net)
 {
 	struct lan78xx_net		*dev = netdev_priv(net);
 
-	phy_stop(net->phydev);
-	phy_disconnect(net->phydev);
-	net->phydev = NULL;
+	if (net->phydev)
+		phy_stop(net->phydev);
 
 	clear_bit(EVENT_DEV_OPEN, &dev->flags);
 	netif_stop_queue(net);
@@ -2933,8 +2928,10 @@ static void lan78xx_disconnect(struct usb_interface *intf)
 		return;
 
 	udev = interface_to_usbdev(intf);
-
 	net = dev->net;
+
+	phy_disconnect(net->phydev);
+
 	unregister_netdev(net);
 
 	cancel_delayed_work_sync(&dev->wq);
@@ -3074,8 +3071,14 @@ static int lan78xx_probe(struct usb_interface *intf,
 	pm_runtime_set_autosuspend_delay(&udev->dev,
 					 DEFAULT_AUTOSUSPEND_DELAY);
 
+	ret = lan78xx_phy_init(dev);
+	if (ret < 0)
+		goto out4;
+
 	return 0;
 
+out4:
+	unregister_netdev(netdev);
 out3:
 	lan78xx_unbind(dev, intf);
 out2:
@@ -3415,7 +3418,7 @@ int lan78xx_reset_resume(struct usb_interface *intf)
 
 	lan78xx_reset(dev);
 
-	lan78xx_phy_init(dev);
+	phy_start(dev->net->phydev);
 
 	return lan78xx_resume(intf);
 }
