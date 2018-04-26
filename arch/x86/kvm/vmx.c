@@ -2936,7 +2936,11 @@ static int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 		kvm_write_tsc(vcpu, msr_info);
 		break;
 	case MSR_IA32_SPEC_CTRL:
-		vcpu->arch.spec_ctrl = msr_info->data;
+		/* The STIBP bit doesn't fault even if it's not advertised */
+		if (data & ~(SPEC_CTRL_IBRS | SPEC_CTRL_STIBP | SPEC_CTRL_RDS))
+			return 1;
+
+		vcpu->arch.spec_ctrl = data;
 		break;
 	case MSR_IA32_CR_PAT:
 		if (vmcs_config.vmentry_ctrl & VM_ENTRY_LOAD_IA32_PAT) {
