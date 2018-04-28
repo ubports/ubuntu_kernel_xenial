@@ -289,6 +289,7 @@
 #define X86_FEATURE_SPEC_CTRL		(16*32+26) /* "" Speculation Control (IBRS + IBPB) */
 #define X86_FEATURE_INTEL_STIBP		(16*32+27) /* "" Single Thread Indirect Branch Predictors */
 #define X86_FEATURE_ARCH_CAPABILITIES	(16*32+29) /* IA32_ARCH_CAPABILITIES MSR (Intel) */
+#define X86_FEATURE_RDS			(16*32+31) /* Reduced Data Speculation */
 
 /*
  * BUG word(s)
