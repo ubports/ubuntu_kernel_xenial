@@ -182,12 +182,18 @@ int _raw_read_trylock_retry(arch_rwlock_t *rw)
 EXPORT_SYMBOL(_raw_read_trylock_retry);
 
 #ifdef CONFIG_HAVE_MARCH_Z196_FEATURES
-
 void _raw_write_lock_wait(arch_rwlock_t *rw, unsigned int prev)
+#else
+void _raw_write_lock_wait(arch_rwlock_t *rw)
+#endif
 {
 	unsigned int owner, old;
 	int count = spin_retry;
 
+#ifdef CONFIG_HAVE_MARCH_Z196_FEATURES
+	if ((int) prev > 0)
+		__RAW_UNLOCK(&rw->lock, 0x7fffffff, __RAW_OP_AND);
+#endif
 	owner = 0;
 	while (1) {
 		if (count-- <= 0) {
@@ -197,50 +203,14 @@ void _raw_write_lock_wait(arch_rwlock_t *rw, unsigned int prev)
 		}
 		old = ACCESS_ONCE(rw->lock);
 		owner = ACCESS_ONCE(rw->owner);
-		smp_mb();
-		if ((int) old >= 0) {
-			prev = __RAW_LOCK(&rw->lock, 0x80000000, __RAW_OP_OR);
-			old = prev;
-		}
-		if ((old & 0x7fffffff) == 0 && (int) prev >= 0)
+		if (old == 0 &&
+		    _raw_compare_and_swap(&rw->lock, 0, 0x80000000))
 			break;
 		if (MACHINE_HAS_CAD)
 			_raw_compare_and_delay(&rw->lock, old);
 	}
 }
 EXPORT_SYMBOL(_raw_write_lock_wait);
-
-#else /* CONFIG_HAVE_MARCH_Z196_FEATURES */
-
-void _raw_write_lock_wait(arch_rwlock_t *rw)
-{
-	unsigned int owner, old, prev;
-	int count = spin_retry;
-
-	prev = 0x80000000;
-	owner = 0;
-	while (1) {
-		if (count-- <= 0) {
-			if (owner && !smp_vcpu_scheduled(~owner))
-				smp_yield_cpu(~owner);
-			count = spin_retry;
-		}
-		old = ACCESS_ONCE(rw->lock);
-		owner = ACCESS_ONCE(rw->owner);
-		if ((int) old >= 0 &&
-		    _raw_compare_and_swap(&rw->lock, old, old | 0x80000000))
-			prev = old;
-		else
-			smp_mb();
-		if ((old & 0x7fffffff) == 0 && (int) prev >= 0)
-			break;
-		if (MACHINE_HAS_CAD)
-			_raw_compare_and_delay(&rw->lock, old);
-	}
-}
-EXPORT_SYMBOL(_raw_write_lock_wait);
-
-#endif /* CONFIG_HAVE_MARCH_Z196_FEATURES */
 
 int _raw_write_trylock_retry(arch_rwlock_t *rw)
 {
