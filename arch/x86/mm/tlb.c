@@ -161,7 +161,7 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
 		if (tsk && tsk->mm &&
 		    get_dumpable(tsk->mm) != SUID_DUMP_USER &&
 		    ibpb_inuse && boot_cpu_has(X86_FEATURE_SPEC_CTRL))
-			native_wrmsrl(MSR_IA32_PRED_CMD, FEATURE_SET_IBPB);
+			native_wrmsrl(MSR_IA32_PRED_CMD, PRED_CMD_IBPB);
 
 		/* Load per-mm CR4 state */
 		load_mm_cr4(next);

@@ -431,10 +431,10 @@ static void mwait_idle(void)
 		if (!need_resched()) {
 			__sti_mwait(0, 0);
 			if (ibrs_inuse)
-				native_wrmsrl(MSR_IA32_SPEC_CTRL, FEATURE_ENABLE_IBRS);
+				native_wrmsrl(MSR_IA32_SPEC_CTRL, SPEC_CTRL_IBRS);
 		} else {
 			if (ibrs_inuse)
-				native_wrmsrl(MSR_IA32_SPEC_CTRL, FEATURE_ENABLE_IBRS);
+				native_wrmsrl(MSR_IA32_SPEC_CTRL, SPEC_CTRL_IBRS);
 			local_irq_enable();
 		}
 		trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, smp_processor_id());

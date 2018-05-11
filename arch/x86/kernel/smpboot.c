@@ -1656,7 +1656,7 @@ void native_play_dead(void)
 		hlt_play_dead();
 
 	if (ibrs_inuse)
-		native_wrmsrl(MSR_IA32_SPEC_CTRL, FEATURE_ENABLE_IBRS);
+		native_wrmsrl(MSR_IA32_SPEC_CTRL, SPEC_CTRL_IBRS);
 }
 
 #else /* ... !CONFIG_HOTPLUG_CPU */

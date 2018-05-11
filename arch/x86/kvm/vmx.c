@@ -2078,7 +2078,7 @@ static void vmx_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
 		per_cpu(current_vmcs, cpu) = vmx->loaded_vmcs->vmcs;
 		vmcs_load(vmx->loaded_vmcs->vmcs);
 		if (ibpb_inuse)
-			native_wrmsrl(MSR_IA32_PRED_CMD, FEATURE_SET_IBPB);
+			native_wrmsrl(MSR_IA32_PRED_CMD, PRED_CMD_IBPB);
 	}
 
 	if (vmx->loaded_vmcs->cpu != cpu) {
@@ -8619,7 +8619,7 @@ static void __noclone vmx_vcpu_run(struct kvm_vcpu *vcpu)
 
 	if (ibrs_inuse)
 		add_atomic_switch_msr(vmx, MSR_IA32_SPEC_CTRL,
-			vcpu->arch.spec_ctrl, FEATURE_ENABLE_IBRS);
+			vcpu->arch.spec_ctrl, SPEC_CTRL_IBRS);
 
 	debugctlmsr = get_debugctlmsr();
 
