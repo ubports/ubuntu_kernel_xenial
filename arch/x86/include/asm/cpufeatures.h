@@ -192,7 +192,6 @@
 
 #define X86_FEATURE_HW_PSTATE	( 7*32+ 8) /* AMD HW-PState */
 #define X86_FEATURE_PROC_FEEDBACK ( 7*32+ 9) /* AMD ProcFeedbackInterface */
-#define X86_FEATURE_PTI			( 7*32+11) /* Kernel Page Table Isolation enabled */
 
 #define X86_FEATURE_INTEL_PT	( 7*32+15) /* Intel Processor Trace */
 #define X86_FEATURE_RSB_CTXSW	( 7*32+19) /* Fill RSB on context switches */
