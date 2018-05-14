@@ -51,91 +51,87 @@ void on_each_cpu_cond(bool (*cond_func)(int cpu, void *info),
 int smp_call_function_single_async(int cpu, struct call_single_data *csd);
 
 #ifdef CONFIG_X86
+
+#define IBxx_INUSE 	(1 << 0)
+#define IBxx_SUPPORTED 	(1 << 1)
+#define IBxx_DISABLED 	(1 << 2)
+
 /* indicate usage of IBRS to control execution speculation */
 extern int use_ibrs;
 extern u32 sysctl_ibrs_enabled;
 extern struct mutex spec_ctrl_mutex;
-#define ibrs_supported		(use_ibrs & 0x2)
-#define ibrs_disabled		(use_ibrs & 0x4)
-static inline void set_ibrs_inuse(void)
+
+static inline int __check_ibrs_inuse(void)
 {
-	if (ibrs_supported)
-		use_ibrs |= 0x1;
-}
-static inline void clear_ibrs_inuse(void)
-{
-	use_ibrs &= ~0x1;
-}
-static inline int check_ibrs_inuse(void)
-{
-	if (use_ibrs & 0x1)
+	if (use_ibrs & IBxx_INUSE)
 		return 1;
 	else
 		/* rmb to prevent wrong speculation for security */
 		rmb();
 	return 0;
 }
+
+#define ibrs_inuse 	(__check_ibrs_inuse())
+#define ibrs_supported	(use_ibrs & IBxx_SUPPORTED)
+#define ibrs_disabled	(use_ibrs & IBxx_DISABLED)
+
 static inline void set_ibrs_supported(void)
 {
-	use_ibrs |= 0x2;
+	use_ibrs |= IBxx_SUPPORTED;
 	if (!ibrs_disabled)
-		set_ibrs_inuse();
+		use_ibrs |= IBxx_INUSE;
 }
 static inline void set_ibrs_disabled(void)
 {
-	use_ibrs |= 0x4;
-	if (check_ibrs_inuse())
-		clear_ibrs_inuse();
+	use_ibrs |= IBxx_DISABLED;
+	if (ibrs_inuse)
+		use_ibrs &= ~IBxx_INUSE;
 }
 static inline void clear_ibrs_disabled(void)
 {
-	use_ibrs &= ~0x4;
-	set_ibrs_inuse();
+	use_ibrs &= ~IBxx_DISABLED;
+	if (ibrs_supported)
+		use_ibrs |= IBxx_INUSE;
 }
-#define ibrs_inuse 		(check_ibrs_inuse())
 
 /* indicate usage of IBPB to control execution speculation */
 extern int use_ibpb;
 extern u32 sysctl_ibpb_enabled;
-#define ibpb_supported		(use_ibpb & 0x2)
-#define ibpb_disabled		(use_ibpb & 0x4)
-static inline void set_ibpb_inuse(void)
+
+static inline int __check_ibpb_inuse(void)
 {
-	if (ibpb_supported)
-		use_ibpb |= 0x1;
-}
-static inline void clear_ibpb_inuse(void)
-{
-	use_ibpb &= ~0x1;
-}
-static inline int check_ibpb_inuse(void)
-{
-	if (use_ibpb & 0x1)
+	if (use_ibpb & IBxx_INUSE)
 		return 1;
 	else
 		/* rmb to prevent wrong speculation for security */
 		rmb();
 	return 0;
 }
+
+#define ibpb_inuse 	(__check_ibpb_inuse())
+#define ibpb_supported	(use_ibpb & IBxx_SUPPORTED)
+#define ibpb_disabled	(use_ibpb & IBxx_DISABLED)
+
 static inline void set_ibpb_supported(void)
 {
-	use_ibpb |= 0x2;
+	use_ibpb |= IBxx_SUPPORTED;
 	if (!ibpb_disabled)
-		set_ibpb_inuse();
+		use_ibpb |= IBxx_INUSE;
 }
 static inline void set_ibpb_disabled(void)
 {
-	use_ibpb |= 0x4;
-	if (check_ibpb_inuse())
-		clear_ibpb_inuse();
+	use_ibpb |= IBxx_DISABLED;
+	if (ibpb_inuse)
+		use_ibpb &= ~IBxx_INUSE;
 }
 static inline void clear_ibpb_disabled(void)
 {
-	use_ibpb &= ~0x4;
-	set_ibpb_inuse();
+	use_ibpb &= ~IBxx_DISABLED;
+	if (ibpb_supported)
+		use_ibpb |= IBxx_INUSE;
 }
-#define ibpb_inuse		(check_ibpb_inuse())
-#endif
+
+#endif /* CONFIG_X86 */
 
 #ifdef CONFIG_SMP
 
