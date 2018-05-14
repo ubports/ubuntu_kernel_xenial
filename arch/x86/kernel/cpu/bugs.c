@@ -284,7 +284,20 @@ retpoline_auto:
 	if (boot_cpu_has(X86_FEATURE_IBPB)) {
 		setup_force_cpu_cap(X86_FEATURE_USE_IBPB);
 		pr_info("Enabling Indirect Branch Prediction Barrier\n");
+
+		set_ibpb_supported();
+		if (ibpb_inuse)
+			sysctl_ibpb_enabled = 1;
 	}
+
+	/* Initialize Indirect Branch Restricted Speculation if supported */
+	if (boot_cpu_has(X86_FEATURE_IBRS)) {
+		pr_info("Enabling Indirect Branch Restricted Speculation\n");
+
+		set_ibrs_supported();
+		if (ibrs_inuse)
+			sysctl_ibrs_enabled = 1;
+        }
 
 	pr_info("Speculation control IBPB %s IBRS %s",
 	        ibpb_supported ? "supported" : "not-supported",
