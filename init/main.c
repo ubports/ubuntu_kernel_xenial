@@ -939,6 +939,13 @@ static int __ref kernel_init(void *unused)
 	/* need to finish all async __init code before freeing the memory */
 	async_synchronize_full();
 	free_initmem();
+	/*
+	 * load_module() results in W+X mappings, which are cleaned up
+	 * with call_rcu_sched().  Let's make sure that queued work is
+	 * flushed so that we don't hit false positives looking for
+	 * insecure pages which are W+X.
+	 */
+	rcu_barrier_sched();
 	mark_rodata_ro();
 	system_state = SYSTEM_RUNNING;
 	numa_default_policy();
