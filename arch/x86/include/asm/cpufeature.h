@@ -26,6 +26,8 @@ enum cpuid_leafs
 	CPUID_8000_0008_EBX,
 	CPUID_6_EAX,
 	CPUID_8000_000A_EDX,
+	CPUID_7_ECX,
+	CPUID_8000_0007_EBX,
 	CPUID_7_EDX,
 };
 
@@ -65,7 +67,9 @@ extern const char * const x86_bug_flags[NBUGINTS*32];
 	   (((bit)>>5)==13 && (1UL<<((bit)&31) & REQUIRED_MASK13)) ||	\
 	   (((bit)>>5)==14 && (1UL<<((bit)&31) & REQUIRED_MASK14)) ||	\
 	   (((bit)>>5)==15 && (1UL<<((bit)&31) & REQUIRED_MASK15)) ||	\
-	   (((bit)>>5)==16 && (1UL<<((bit)&31) & REQUIRED_MASK16)) )
+	   (((bit)>>5)==16 && (1UL<<((bit)&31) & REQUIRED_MASK16)) ||	\
+	   (((bit)>>5)==17 && (1UL<<((bit)&31) & REQUIRED_MASK17)) ||	\
+	   (((bit)>>5)==18 && (1UL<<((bit)&31) & REQUIRED_MASK18)) )
 
 #define DISABLED_MASK_BIT_SET(bit)					\
 	 ( (((bit)>>5)==0  && (1UL<<((bit)&31) & DISABLED_MASK0 )) ||	\
@@ -84,7 +88,9 @@ extern const char * const x86_bug_flags[NBUGINTS*32];
 	   (((bit)>>5)==13 && (1UL<<((bit)&31) & DISABLED_MASK13)) ||	\
 	   (((bit)>>5)==14 && (1UL<<((bit)&31) & DISABLED_MASK14)) ||	\
 	   (((bit)>>5)==15 && (1UL<<((bit)&31) & DISABLED_MASK15)) ||	\
-	   (((bit)>>5)==16 && (1UL<<((bit)&31) & DISABLED_MASK16)) )
+	   (((bit)>>5)==16 && (1UL<<((bit)&31) & DISABLED_MASK16)) ||	\
+	   (((bit)>>5)==17 && (1UL<<((bit)&31) & DISABLED_MASK17)) ||	\
+	   (((bit)>>5)==18 && (1UL<<((bit)&31) & DISABLED_MASK18)) )
 
 #define cpu_has(c, bit)							\
 	(__builtin_constant_p(bit) && REQUIRED_MASK_BIT_SET(bit) ? 1 :	\

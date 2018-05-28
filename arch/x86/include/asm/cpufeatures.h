@@ -12,7 +12,7 @@
 /*
  * Defines x86 CPU feature bits
  */
-#define NCAPINTS	17	/* N 32-bit words worth of info */
+#define NCAPINTS	19	/* N 32-bit words worth of info */
 #define NBUGINTS	1	/* N 32-bit bug flags */
 
 /*
@@ -297,11 +297,11 @@
 #define X86_FEATURE_PFTHRESHOLD (15*32+12) /* pause filter threshold */
 #define X86_FEATURE_AVIC	(15*32+13) /* Virtual Interrupt Controller */
 
-/* Intel-defined CPU features, CPUID level 0x00000007:0 (EDX), word 16 */
-#define X86_FEATURE_SPEC_CTRL		(16*32+26) /* "" Speculation Control (IBRS + IBPB) */
-#define X86_FEATURE_INTEL_STIBP		(16*32+27) /* "" Single Thread Indirect Branch Predictors */
-#define X86_FEATURE_ARCH_CAPABILITIES	(16*32+29) /* IA32_ARCH_CAPABILITIES MSR (Intel) */
-#define X86_FEATURE_SPEC_CTRL_SSBD	(16*32+31) /* "" Speculative Store Bypass Disable */
+/* Intel-defined CPU features, CPUID level 0x00000007:0 (EDX), word 18 */
+#define X86_FEATURE_SPEC_CTRL		(18*32+26) /* "" Speculation Control (IBRS + IBPB) */
+#define X86_FEATURE_INTEL_STIBP		(18*32+27) /* "" Single Thread Indirect Branch Predictors */
+#define X86_FEATURE_ARCH_CAPABILITIES	(18*32+29) /* IA32_ARCH_CAPABILITIES MSR (Intel) */
+#define X86_FEATURE_SPEC_CTRL_SSBD	(18*32+31) /* "" Speculative Store Bypass Disable */
 
 /*
  * BUG word(s)
