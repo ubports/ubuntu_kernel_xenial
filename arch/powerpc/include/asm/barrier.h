@@ -36,7 +36,8 @@
 
 #define smp_store_mb(var, value) do { WRITE_ONCE(var, value); smp_mb(); } while (0)
 
-#define osb()   asm volatile("ori 31,31,0")
+/* Prevent speculative execution past this barrier. */
+#define barrier_nospec()	asm volatile("ori 31,31,0")
 
 /* The sub-arch has lwsync */
 #if defined(__powerpc64__) || defined(CONFIG_PPC_E500MC)

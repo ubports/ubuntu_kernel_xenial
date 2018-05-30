@@ -24,13 +24,12 @@
 
 #define mb() do {  asm volatile(__ASM_BARRIER : : : "memory"); } while (0)
 
-static inline void osb(void)
-{
-	asm volatile(
-		ALTERNATIVE("", ".long 0xb2e8f000", 81)
-		: : : "memory");
-}
-#define osb osb
+/* Prevent speculative execution past this barrier. */
+#define barrier_nospec()						\
+	do {								\
+		asm volatile(ALTERNATIVE("", ".long 0xb2e8f000", 81)	\
+			     : : : "memory");				\
+	} while (0)
 
 #define rmb()				barrier()
 #define wmb()				barrier()

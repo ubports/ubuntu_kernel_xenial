@@ -681,13 +681,6 @@ void x86_spec_ctrl_setup_ap(void)
 
 #ifdef CONFIG_SYSFS
 
-#ifndef osb
-#define osb_is_enabled 	(0)
-#endif
-#ifndef osb_is_enabled
-#define osb_is_enabled	(1)
-#endif
-
 static ssize_t cpu_show_common(struct device *dev, struct device_attribute *attr,
 			       char *buf, unsigned int bug)
 {
@@ -702,9 +695,7 @@ static ssize_t cpu_show_common(struct device *dev, struct device_attribute *attr
 		break;
 
 	case X86_BUG_SPECTRE_V1:
-		return sprintf(buf, "Mitigation: __user pointer sanitization%s%s\n",
-			       osb_is_enabled ? ", OSB (observable speculation barrier, Intel v6)" : "");
-
+		return sprintf(buf, "Mitigation: __user pointer sanitization\n");
 		break;
 
 	case X86_BUG_SPECTRE_V2:
