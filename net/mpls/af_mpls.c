@@ -42,10 +42,10 @@ static struct mpls_route *mpls_route_input_rcu(struct net *net, unsigned index)
 	struct mpls_route *rt = NULL;
 
 	if (index < net->mpls.platform_labels) {
-		struct mpls_route __rcu **platform_label =
-			rcu_dereference(net->mpls.platform_label);
+		struct mpls_route __rcu **platform_label;
 
-		osb();
+		index = array_index_nospec(index, net->mpls.platform_labels); /* needed? */
+		platform_label = rcu_dereference(net->mpls.platform_label);
 		rt = rcu_dereference(platform_label[index]);
 	}
 	return rt;

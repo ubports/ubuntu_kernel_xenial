@@ -79,6 +79,7 @@
 #include <linux/netfilter_ipv4.h>
 #include <linux/compat.h>
 #include <linux/uio.h>
+#include <linux/nospec.h>
 
 struct raw_frag_vec {
 	struct msghdr *msg;
@@ -464,9 +465,11 @@ static int raw_getfrag(void *from, char *to, int offset, int len, int odd,
 	struct raw_frag_vec *rfv = from;
 
 	if (offset < rfv->hlen) {
-		int copy = min(rfv->hlen - offset, len);
+		int copy;
 
-		osb();
+		offset = array_index_nospec(offset, rfv->hlen); /* needed? */
+		copy = min(rfv->hlen - offset, len);
+
 		if (skb->ip_summed == CHECKSUM_PARTIAL)
 			memcpy(to, rfv->hdr.c + offset, copy);
 		else

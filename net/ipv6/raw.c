@@ -62,6 +62,7 @@
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
 #include <linux/export.h>
+#include <linux/nospec.h>
 
 #define	ICMPV6_HDRLEN	4	/* ICMPv6 header, RFC 4443 Section 2.1 */
 
@@ -715,9 +716,11 @@ static int raw6_getfrag(void *from, char *to, int offset, int len, int odd,
 	struct raw6_frag_vec *rfv = from;
 
 	if (offset < rfv->hlen) {
-		int copy = min(rfv->hlen - offset, len);
+		int copy;
 
-		osb();
+		offset = array_index_nospec(offset, rfv->hlen); /* needed? */
+		copy = min(rfv->hlen - offset, len);
+
 		if (skb->ip_summed == CHECKSUM_PARTIAL)
 			memcpy(to, rfv->c + offset, copy);
 		else
