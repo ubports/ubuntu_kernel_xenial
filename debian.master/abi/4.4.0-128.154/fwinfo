@@ -392,6 +392,7 @@ firmware:       i1480-usb-0.0.bin
 firmware:       i2400m-fw-usb-1.5.sbcf
 firmware:       i6050-fw-usb-1.5.sbcf
 firmware:       i915/bxt_dmc_ver1.bin
+firmware:       i915/kbl_dmc_ver1.bin
 firmware:       i915/skl_dmc_ver1.bin
 firmware:       i915/skl_guc_ver4.bin
 firmware:       i915/skl_guc_ver6.bin
