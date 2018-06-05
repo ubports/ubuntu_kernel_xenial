@@ -1,3 +1,9 @@
+linux-hwe (4.15.0-23.25~16.04.2) xenial; urgency=low
+
+  * Switch up to linux-hwe.
+
+ -- Andy Whitcroft <apw@canonical.com>  Tue, 05 Jun 2018 17:12:03 +0100
+
 linux-hwe-edge (4.15.0-23.25~16.04.1) xenial; urgency=medium
 
   * linux-hwe-edge: 4.15.0-23.25~16.04.1 -proposed tracker (LP: #1772935)
