@@ -1,4 +1,4 @@
-linux-hwe (4.15.0-23.25~16.04.2) xenial; urgency=low
+linux-hwe (4.15.0-23.25~16.04.2~rc1) xenial; urgency=low
 
   * Switch up to linux-hwe.
 
