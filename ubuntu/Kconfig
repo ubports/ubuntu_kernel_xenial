@@ -37,6 +37,10 @@ source "ubuntu/bnxt/Kconfig"
 ##
 ##
 ##
+source "ubuntu/ixxat/Kconfig"
+##
+##
+##
 ##
 ##
 ##

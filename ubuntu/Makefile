@@ -49,6 +49,10 @@ obj-$(CONFIG_BNXT_BPO) += bnxt/
 ##
 ##
 ##
+obj-$(CONFIG_CAN_HMS_USB) += ixxat/
+##
+##
+##
 ##
 ##
 ##

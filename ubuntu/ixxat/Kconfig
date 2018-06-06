@@ -1,0 +1,8 @@
+config CAN_HMS_USB
+	tristate "HMS USB SocketCAN"
+	depends on X86 || X86_64
+	depends on USB && CAN_DEV
+	---help---
+	This driver is from IXXAT and supports SocketCAN over USB.
+	(https://www.ixxat.com)
+
