@@ -588,11 +588,12 @@ static int virtscsi_queuecommand_single(struct Scsi_Host *sh,
 }
 
 static struct virtio_scsi_vq *virtscsi_pick_vq_mq(struct virtio_scsi *vscsi,
-						  struct scsi_cmnd *sc)
+						  struct virtio_scsi_target_state *tgt, struct scsi_cmnd *sc)
 {
 	u32 tag = blk_mq_unique_tag(sc->request);
 	u16 hwq = blk_mq_unique_tag_to_hwq(tag);
 
+	atomic_inc(&tgt->reqs);
 	return &vscsi->req_vqs[hwq];
 }
 
@@ -642,7 +643,7 @@ static int virtscsi_queuecommand_multi(struct Scsi_Host *sh,
 	struct virtio_scsi_vq *req_vq;
 
 	if (shost_use_blk_mq(sh))
-		req_vq = virtscsi_pick_vq_mq(vscsi, sc);
+		req_vq = virtscsi_pick_vq_mq(vscsi, tgt, sc);
 	else
 		req_vq = virtscsi_pick_vq(vscsi, tgt);
 
