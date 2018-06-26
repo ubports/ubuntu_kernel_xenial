@@ -1,4 +1,6 @@
-linux-gcp (4.15.0-1010.10) bionic; urgency=medium
+linux-gcp (4.15.0-1010.10~16.04.1) xenial; urgency=medium
+
+  * linux-gcp: 4.15.0-1010.10~16.04.1 -proposed tracker (LP: #1778772)
 
   * linux-gcp: 4.15.0-1010.10 -proposed tracker (LP: #1776344)
 

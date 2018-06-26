@@ -1,4 +1,5 @@
 # Recreate any symlinks created since the orig.
+[ ! -L 'debian.gcp-xenial/config/annotations' ] && ln -sf '../../debian.master/config/annotations' 'debian.gcp-xenial/config/annotations'
 [ ! -L 'debian.gcp/config/annotations' ] && ln -sf '../../debian.master/config/annotations' 'debian.gcp/config/annotations'
 # Remove any files deleted from the orig.
 rm -f 'Documentation/devicetree/bindings/display/panel/toppoly,td028ttec1.txt'
