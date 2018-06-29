@@ -30,6 +30,11 @@
 /* Serializes the updates to cpu_online_mask, cpu_present_mask */
 static DEFINE_MUTEX(cpu_add_remove_lock);
 
+#ifdef CONFIG_HOTPLUG_SMT
+static DECLARE_BITMAP(cpu_bootonce_bits, CONFIG_NR_CPUS) __read_mostly;
+const struct cpumask *const cpu_bootonce_mask = to_cpumask(cpu_bootonce_bits);
+#endif
+
 /*
  * The following two APIs (cpu_maps_update_begin/done) must be used when
  * attempting to serialize the updates to cpu_online_mask & cpu_present_mask.
@@ -192,6 +197,40 @@ void cpu_hotplug_enable(void)
 EXPORT_SYMBOL_GPL(cpu_hotplug_enable);
 #endif	/* CONFIG_HOTPLUG_CPU */
 
+#ifdef CONFIG_HOTPLUG_SMT
+enum cpuhp_smt_control cpu_smt_control __read_mostly = CPU_SMT_ENABLED;
+
+static int __init smt_cmdline_disable(char *str)
+{
+	cpu_smt_control = CPU_SMT_DISABLED;
+	if (str && !strcmp(str, "force")) {
+		pr_info("SMT: Force disabled\n");
+		cpu_smt_control = CPU_SMT_FORCE_DISABLED;
+	}
+	return 0;
+}
+early_param("nosmt", smt_cmdline_disable);
+
+static inline bool cpu_smt_allowed(unsigned int cpu)
+{
+	if (cpu_smt_control == CPU_SMT_ENABLED)
+		return true;
+
+	if (topology_is_primary_thread(cpu))
+		return true;
+
+	/*
+	 * On x86 it's required to boot all logical CPUs at least once so
+	 * that the init code can get a chance to set CR4.MCE on each
+	 * CPU. Otherwise, a broadacasted MCE observing CR4.MCE=0b on any
+	 * core will shutdown the machine.
+	 */
+	return !cpumask_test_cpu(cpu, cpu_bootonce_mask);
+}
+#else
+static inline bool cpu_smt_allowed(unsigned int cpu) { return true; }
+#endif
+
 /* Need to know about CPUs going up/down? */
 int register_cpu_notifier(struct notifier_block *nb)
 {
@@ -241,29 +280,6 @@ void __unregister_cpu_notifier(struct notifier_block *nb)
 EXPORT_SYMBOL(__unregister_cpu_notifier);
 
 #ifdef CONFIG_HOTPLUG_CPU
-#ifdef CONFIG_HOTPLUG_SMT
-enum cpuhp_smt_control cpu_smt_control __read_mostly = CPU_SMT_ENABLED;
-
-static int __init smt_cmdline_disable(char *str)
-{
-	cpu_smt_control = CPU_SMT_DISABLED;
-	if (str && !strcmp(str, "force")) {
-		pr_info("SMT: Force disabled\n");
-		cpu_smt_control = CPU_SMT_FORCE_DISABLED;
-	}
-	return 0;
-}
-early_param("nosmt", smt_cmdline_disable);
-
-static inline bool cpu_smt_allowed(unsigned int cpu)
-{
-	return cpu_smt_control == CPU_SMT_ENABLED ||
-		topology_is_primary_thread(cpu);
-}
-#else
-static inline bool cpu_smt_allowed(unsigned int cpu) { return true; }
-#endif
-
 static void cpu_notify_nofail(unsigned long val, void *v)
 {
 	BUG_ON(cpu_notify(val, v));
@@ -376,7 +392,6 @@ static int _cpu_down(unsigned int cpu, int tasks_frozen)
 		return -EINVAL;
 
 	cpu_hotplug_begin();
-
 	err = __cpu_notify(CPU_DOWN_PREPARE | mod, hcpu, -1, &nr_calls);
 	if (err) {
 		nr_calls--;
@@ -453,12 +468,13 @@ out_release:
 	return err;
 }
 
-static int cpu_down_maps_locked(unsigned int cpu)
+int cpu_down_maps_locked(unsigned int cpu)
 {
 	if (cpu_hotplug_disabled)
 		return -EBUSY;
 	return _cpu_down(cpu, 0);
 }
+EXPORT_SYMBOL(cpu_down_maps_locked);
 
 int cpu_down(unsigned int cpu)
 {
@@ -539,9 +555,12 @@ static int _cpu_up(unsigned int cpu, int tasks_frozen)
 
 	/* Arch-specific enabling code. */
 	ret = __cpu_up(cpu, idle);
-
 	if (ret != 0)
 		goto out_notify;
+
+#ifdef CONFIG_HOTPLUG_SMT
+	cpumask_set_cpu(cpu, to_cpumask(cpu_bootonce_bits));
+#endif
 	BUG_ON(!cpu_online(cpu));
 
 	/* Now call notifier in preparation. */

@@ -243,6 +243,7 @@ extern void cpu_hotplug_enable(void);
 #define __unregister_hotcpu_notifier(nb)	__unregister_cpu_notifier(nb)
 void clear_tasks_mm_cpumask(int cpu);
 int cpu_down(unsigned int cpu);
+int cpu_down_maps_locked(unsigned int cpu);
 
 #else		/* CONFIG_HOTPLUG_CPU */
 
