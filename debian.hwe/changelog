@@ -1,6 +1,16 @@
-linux-hwe (4.15.0-25.27~16.04.1) xenial; urgency=medium
+linux-hwe (4.15.0-26.28~16.04.1) xenial; urgency=medium
 
-  * linux-hwe: 4.15.0-25.27~16.04.1 -proposed tracker (LP: #1779371)
+  * linux-hwe: 4.15.0-26.28~16.04.1 -proposed tracker (LP: #1780126)
+
+  * linux: 4.15.0-26.28 -proposed tracker (LP: #1780112)
+
+  * failure to boot with linux-image-4.15.0-24-generic (LP: #1779827) // Cloud-
+    init causes potentially huge boot delays with 4.15 kernels (LP: #1780062)
+    - random: Make getrandom() ready earlier
+
+ -- Kleber Sacilotto de Souza <kleber.souza@canonical.com>  Thu, 05 Jul 2018 10:55:23 +0200
+
+linux (4.15.0-25.27) bionic; urgency=medium
 
   * linux: 4.15.0-25.27 -proposed tracker (LP: #1779354)
 
@@ -34,7 +44,7 @@ linux-hwe (4.15.0-25.27~16.04.1) xenial; urgency=medium
   * large KVM instances run out of IRQ routes (LP: #1778261)
     - SAUCE: kvm -- increase KVM_MAX_IRQ_ROUTES to 2048 on x86
 
- -- Kleber Sacilotto de Souza <kleber.souza@canonical.com>  Mon, 02 Jul 2018 18:53:17 +0200
+ -- Khalid Elmously <khalid.elmously@canonical.com>  Sun, 01 Jul 2018 23:10:18 +0000
 
 linux (4.15.0-24.26) bionic; urgency=medium
 
