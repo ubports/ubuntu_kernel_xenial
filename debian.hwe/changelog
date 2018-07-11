@@ -1,6 +1,17 @@
-linux-hwe (4.15.0-26.28~16.04.1) xenial; urgency=medium
+linux-hwe (4.15.0-27.29~16.04.1) xenial; urgency=medium
 
-  * linux-hwe: 4.15.0-26.28~16.04.1 -proposed tracker (LP: #1780126)
+  * linux-hwe: 4.15.0-27.29~16.04.1 -proposed tracker (LP: #1781116)
+
+  * linux: 4.15.0-27.29 -proposed tracker (LP: #1781062)
+
+  * [Regression] EXT4-fs error (device sda1): ext4_validate_inode_bitmap:99:
+    comm stress-ng: Corrupt inode bitmap (LP: #1780137)
+    - SAUCE: ext4: fix ext4_validate_inode_bitmap: comm stress-ng: Corrupt inode
+      bitmap
+
+ -- Khalid Elmously <khalid.elmously@canonical.com>  Tue, 10 Jul 2018 19:05:00 -0400
+
+linux (4.15.0-26.28) bionic; urgency=medium
 
   * linux: 4.15.0-26.28 -proposed tracker (LP: #1780112)
 
@@ -8,7 +19,7 @@ linux-hwe (4.15.0-26.28~16.04.1) xenial; urgency=medium
     init causes potentially huge boot delays with 4.15 kernels (LP: #1780062)
     - random: Make getrandom() ready earlier
 
- -- Kleber Sacilotto de Souza <kleber.souza@canonical.com>  Thu, 05 Jul 2018 10:55:23 +0200
+ -- Stefan Bader <stefan.bader@canonical.com>  Wed, 04 Jul 2018 17:52:52 +0200
 
 linux (4.15.0-25.27) bionic; urgency=medium
 
