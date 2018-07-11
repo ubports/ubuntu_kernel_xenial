@@ -1680,6 +1680,9 @@ dotraplinkage void do_mce(struct pt_regs *regs, long error_code)
 	machine_check_vector(regs, error_code);
 }
 
+static struct notifier_block mce_cpu_notifier;
+static bool mce_cpu_notifier_registered = false;
+
 /*
  * Called for each booted CPU to set up machine checks.
  * Must be called with preempt off:
@@ -1710,6 +1713,18 @@ void mcheck_cpu_init(struct cpuinfo_x86 *c)
 
 	__mcheck_cpu_init_generic();
 	__mcheck_cpu_init_vendor(c);
+
+	if (!mce_cpu_notifier_registered) {
+		/*
+		 * Register the CPU hotplug notifier early (and it will
+		 * not be unregistered (as before) to not leave timers
+		 * undeleted. This function is called with required locks
+		 * being hold.
+		 */
+		__register_hotcpu_notifier(&mce_cpu_notifier);
+		mce_cpu_notifier_registered = true;
+	}
+
 	__mcheck_cpu_init_timer();
 }
 
@@ -2318,6 +2333,7 @@ static struct device_attribute *mce_device_attrs[] = {
 	NULL
 };
 
+static bool mce_device_initdone = false;
 static cpumask_var_t mce_device_initialized;
 
 static void mce_device_release(struct device *dev)
@@ -2434,14 +2450,16 @@ mce_cpu_callback(struct notifier_block *nfb, unsigned long action, void *hcpu)
 
 	switch (action & ~CPU_TASKS_FROZEN) {
 	case CPU_ONLINE:
-		mce_device_create(cpu);
+		if (mce_device_initdone)
+			mce_device_create(cpu);
 		if (threshold_cpu_callback)
 			threshold_cpu_callback(action, cpu);
 		break;
 	case CPU_DEAD:
 		if (threshold_cpu_callback)
 			threshold_cpu_callback(action, cpu);
-		mce_device_remove(cpu);
+		if (mce_device_initdone)
+			mce_device_remove(cpu);
 		mce_intel_hcpu_update(cpu);
 
 		/* intentionally ignoring frozen here */
@@ -2504,23 +2522,15 @@ static __init int mcheck_init_device(void)
 	if (err)
 		goto err_out_mem;
 
-	cpu_notifier_register_begin();
+	cpu_maps_update_begin();
 	for_each_online_cpu(i) {
 		err = mce_device_create(i);
 		if (err) {
-			/*
-			 * Register notifier anyway (and do not unreg it) so
-			 * that we don't leave undeleted timers, see notifier
-			 * callback above.
-			 */
-			__register_hotcpu_notifier(&mce_cpu_notifier);
-			cpu_notifier_register_done();
+			cpu_maps_update_done();
 			goto err_device_create;
 		}
 	}
-
-	__register_hotcpu_notifier(&mce_cpu_notifier);
-	cpu_notifier_register_done();
+	cpu_maps_update_done();
 
 	register_syscore_ops(&mce_syscore_ops);
 
@@ -2528,6 +2538,8 @@ static __init int mcheck_init_device(void)
 	err = misc_register(&mce_chrdev_device);
 	if (err)
 		goto err_register;
+
+	mce_device_initdone = true;
 
 	return 0;
 
