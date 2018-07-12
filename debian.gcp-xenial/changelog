@@ -1,6 +1,20 @@
-linux-gcp (4.15.0-1012.12~16.04.2) xenial; urgency=medium
+linux-gcp (4.15.0-1013.13~16.04.1) xenial; urgency=medium
 
-  * linux-gcp: 4.15.0-1012.12~16.04.2 -proposed tracker (LP: #1780124)
+  * linux-gcp: 4.15.0-1013.13~16.04.1 -proposed tracker (LP: #1781115)
+
+  * linux-gcp: 4.15.0-1013.13 -proposed tracker (LP: #1781067)
+
+  [ Ubuntu: 4.15.0-27.29 ]
+
+  * linux: 4.15.0-27.29 -proposed tracker (LP: #1781062)
+  * [Regression] EXT4-fs error (device sda1): ext4_validate_inode_bitmap:99:
+    comm stress-ng: Corrupt inode bitmap (LP: #1780137)
+    - SAUCE: ext4: fix ext4_validate_inode_bitmap: comm stress-ng: Corrupt inode
+      bitmap
+
+ -- Khalid Elmously <khalid.elmously@canonical.com>  Tue, 10 Jul 2018 22:06:24 -0400
+
+linux-gcp (4.15.0-1012.12) bionic; urgency=medium
 
   * linux-gcp: 4.15.0-1012.12 -proposed tracker (LP: #1780118)
 
