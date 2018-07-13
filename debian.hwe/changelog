@@ -1,6 +1,16 @@
-linux-hwe (4.15.0-27.29~16.04.1) xenial; urgency=medium
+linux-hwe (4.15.0-28.30~16.04.1) xenial; urgency=medium
 
-  * linux-hwe: 4.15.0-27.29~16.04.1 -proposed tracker (LP: #1781116)
+  * linux-hwe: 4.15.0-28.30~16.04.1 -proposed tracker (LP: #1781437)
+
+  * linux: 4.15.0-28.30 -proposed tracker (LP: #1781433)
+
+  * Cannot set MTU higher than 1500 in Xen instance (LP: #1781413)
+    - xen-netfront: Fix mismatched rtnl_unlock
+    - xen-netfront: Update features after registering netdev
+
+ -- Khalid Elmously <khalid.elmously@canonical.com>  Tue, 12 Jul 2018 19:05:00 -0400
+
+linux (4.15.0-27.29) bionic; urgency=medium
 
   * linux: 4.15.0-27.29 -proposed tracker (LP: #1781062)
 
