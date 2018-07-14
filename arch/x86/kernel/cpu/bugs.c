@@ -429,6 +429,15 @@ retpoline_auto:
 				sysctl_ibrs_enabled = 0;
 		}
 	}
+
+	/*
+	 * Retpoline means the kernel is safe because it has no indirect
+	 * branches. But firmware isn't, so use IBRS to protect that.
+	 */
+	if (boot_cpu_has(X86_FEATURE_IBRS)) {
+		setup_force_cpu_cap(X86_FEATURE_USE_IBRS_FW);
+		pr_info("Enabling Restricted Speculation for firmware calls\n");
+	}
 }
 
 #undef pr_fmt
@@ -797,8 +806,9 @@ static ssize_t cpu_show_common(struct device *dev, struct device_attribute *attr
 		break;
 
 	case X86_BUG_SPECTRE_V2:
-		return sprintf(buf, "%s%s%s\n", spectre_v2_strings[spectre_v2_enabled],
+		return sprintf(buf, "%s%s%s%s\n", spectre_v2_strings[spectre_v2_enabled],
 			       ibpb_inuse ? ", IBPB (Intel v4)" : "",
+			       boot_cpu_has(X86_FEATURE_USE_IBRS_FW) ? ", IBRS_FW" : "",
 			       spectre_v2_module_string());
 
 	case X86_BUG_SPEC_STORE_BYPASS:
