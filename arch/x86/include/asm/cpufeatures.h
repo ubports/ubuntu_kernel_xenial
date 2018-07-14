@@ -303,6 +303,11 @@
 #define X86_FEATURE_PKU		(16*32+ 3) /* Protection Keys for Userspace */
 #define X86_FEATURE_OSPKE	(16*32+ 4) /* OS Protection Keys Enable */
 
+/* AMD-defined CPU features, CPUID level 0x80000007 (ebx), word 17 */
+#define X86_FEATURE_OVERFLOW_RECOV (17*32+0) /* MCA overflow recovery support */
+#define X86_FEATURE_SUCCOR	(17*32+1) /* Uncorrectable error containment and recovery */
+#define X86_FEATURE_SMCA	(17*32+3) /* Scalable MCA */
+
 /* Intel-defined CPU features, CPUID level 0x00000007:0 (EDX), word 18 */
 #define X86_FEATURE_SPEC_CTRL		(18*32+26) /* "" Speculation Control (IBRS + IBPB) */
 #define X86_FEATURE_INTEL_STIBP		(18*32+27) /* "" Single Thread Indirect Branch Predictors */
