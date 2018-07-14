@@ -239,6 +239,19 @@ void alternative_msr_write(unsigned int msr, u64 val, unsigned int feature)
 		: "memory");
 }
 
+static inline void indirect_branch_prediction_barrier(void)
+{
+	asm volatile(ALTERNATIVE("",
+				 "movl %[msr], %%ecx\n\t"
+				 "movl %[val], %%eax\n\t"
+				 "movl $0, %%edx\n\t"
+				 "wrmsr",
+				 X86_FEATURE_USE_IBPB)
+			: : [msr] "i" (MSR_IA32_PRED_CMD),
+			    [val] "i" (PRED_CMD_IBPB)
+			: "eax", "ecx", "edx", "memory");
+}
+
 #endif /* __ASSEMBLY__ */
 
 /*
