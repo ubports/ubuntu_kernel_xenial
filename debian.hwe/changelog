@@ -1,6 +1,15 @@
-linux-hwe (4.15.0-29.31~16.04.1) xenial; urgency=medium
+linux-hwe (4.15.0-30.32~16.04.1) xenial; urgency=medium
 
-  * linux-hwe: 4.15.0-29.31~16.04.1 -proposed tracker (LP: #1782183)
+  * CVE-2018-5390
+    - tcp: free batches of packets in tcp_prune_ofo_queue()
+    - tcp: avoid collapses in tcp_prune_queue() if possible
+    - tcp: detect malicious patterns in tcp_collapse_ofo_queue()
+    - tcp: call tcp_drop() from tcp_data_queue_ofo()
+    - tcp: add tcp_ooo_try_coalesce() helper
+
+ -- Stefan Bader <stefan.bader@canonical.com>  Thu, 26 Jul 2018 17:20:29 +0200
+
+linux (4.15.0-29.31) bionic; urgency=medium
 
   * linux: 4.15.0-29.31 -proposed tracker (LP: #1782173)
 
@@ -37,7 +46,7 @@ linux-hwe (4.15.0-29.31~16.04.1) xenial; urgency=medium
       stress-ng: Corrupt inode bitmap"
     - SAUCE: ext4: check for allocation block validity with block group locked
 
- -- Khalid Elmously <khalid.elmously@canonical.com>  Wed, 18 Jul 2018 04:02:03 +0000
+ -- Stefan Bader <stefan.bader@canonical.com>  Tue, 17 Jul 2018 10:57:50 +0200
 
 linux (4.15.0-28.30) bionic; urgency=medium
 
