@@ -85,8 +85,8 @@
 };
 
 &soc {
-	expgpio: expgpio {
-		compatible = "brcm,bcm2835-expgpio";
+	virtgpio: virtgpio {
+		compatible = "brcm,bcm2835-virtgpio";
 		gpio-controller;
 		#gpio-cells = <2>;
 		firmware = <&firmware>;
@@ -163,7 +163,7 @@
 	pwr_led: pwr {
 		label = "led1";
 		linux,default-trigger = "default-on";
-		gpios = <&expgpio 2 0>;
+		gpios = <&virtgpio 2 0>;
 	};
 };
 
