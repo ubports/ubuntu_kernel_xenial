@@ -16,6 +16,7 @@
 #include <linux/uaccess.h>		/* faulthandler_disabled()	*/
 
 #include <asm/traps.h>			/* dotraplinkage, ...		*/
+#include <asm/sections.h>
 #include <asm/pgalloc.h>		/* pgd_*(), ...			*/
 #include <asm/kmemcheck.h>		/* kmemcheck_*(), ...		*/
 #include <asm/fixmap.h>			/* VSYSCALL_ADDR		*/

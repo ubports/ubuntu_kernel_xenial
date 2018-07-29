@@ -19,6 +19,7 @@
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
 #include <asm/desc.h>
+#include <asm/sections.h>
 #include <asm/cmdline.h>
 #include <asm/vsyscall.h>
 

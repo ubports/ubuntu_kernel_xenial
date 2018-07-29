@@ -9,6 +9,7 @@
 #include <asm/fpu/regset.h>
 #include <asm/fpu/signal.h>
 #include <asm/traps.h>
+#include <asm/irq_regs.h>
 
 #include <linux/hardirq.h>
 
