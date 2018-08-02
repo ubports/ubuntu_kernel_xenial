@@ -47,8 +47,6 @@ parts:
     prime:
       - -usr
       - -lib
-    install: |
-      rm $SNAPCRAFT_PART_INSTALL/lib/firmware/brcm/brcmfmac43430-sdio.bin
     build-packages:
       - cpio
       - libssl-dev
@@ -67,7 +65,7 @@ parts:
     install: |
       mkdir -p $SNAPCRAFT_PART_INSTALL/firmware/brcm
       mv unpack/usr/share/doc/raspberrypi-wireless-firmware $SNAPCRAFT_PART_INSTALL/firmware/rpi-wlanfw-licenses
-      mv unpack/lib/firmware/brcm80211/brcm/* $SNAPCRAFT_PART_INSTALL/firmware/brcm
+      mv unpack/lib/firmware/brcm/* $SNAPCRAFT_PART_INSTALL/firmware/brcm
     build-packages:
       - coreutils
       - dctrl-tools
