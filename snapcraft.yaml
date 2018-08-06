@@ -17,12 +17,11 @@ parts:
     kconfigflavour: snapdragon
     kconfigs:
       - CONFIG_DEBUG_INFO=n
+    kernel-image-target: Image
     override-build: |
       cp debian/scripts/retpoline-extract-one \
         $SNAPCRAFT_PART_BUILD/scripts/ubuntu-retpoline-extract-one
       snapcraftctl build
-    kernel-image-target: Image
-    install: |
       cp $SNAPCRAFT_PART_INSTALL/dtbs/qcom/apq8016-sbc-snappy.dtb $SNAPCRAFT_PART_INSTALL/dtbs/qcom/apq8016-sbc.dtb
       cp $SNAPCRAFT_PART_INSTALL/dtbs/qcom/*.dtb $SNAPCRAFT_PART_INSTALL/dtbs/
   firmware:
@@ -35,7 +34,8 @@ parts:
     prime:
       - -usr
       - -lib
-    install: |
+    override-build: |
+      snapcraftctl build
       mkdir -p $SNAPCRAFT_PART_INSTALL/firmware/wlan
       ln -s /run/macaddr0 $SNAPCRAFT_PART_INSTALL/firmware/wlan/
     build-packages:
