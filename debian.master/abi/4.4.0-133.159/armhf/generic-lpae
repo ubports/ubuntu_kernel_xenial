@@ -8181,6 +8181,7 @@ EXPORT_SYMBOL vmlinux 0xcf4a0675	scsi_cmd_ioctl
 EXPORT_SYMBOL vmlinux 0xcf5fc75c	__dev_getfirstbyhwtype
 EXPORT_SYMBOL vmlinux 0xcf88625f	mempool_create_node
 EXPORT_SYMBOL vmlinux 0xcf8ae7b1	__scm_send
+EXPORT_SYMBOL vmlinux 0xcfa77c08	cpu_down_maps_locked
 EXPORT_SYMBOL vmlinux 0xcfbaa1a1	md_flush_request
 EXPORT_SYMBOL vmlinux 0xcfc0ca2d	blk_get_request
 EXPORT_SYMBOL vmlinux 0xcfcda9ff	send_sig_info

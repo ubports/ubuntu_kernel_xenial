@@ -8207,6 +8207,7 @@ EXPORT_SYMBOL vmlinux 0xcf5ebdb2	dm_kcopyd_zero
 EXPORT_SYMBOL vmlinux 0xcf7d1b11	ip_mc_leave_group
 EXPORT_SYMBOL vmlinux 0xcf88625f	mempool_create_node
 EXPORT_SYMBOL vmlinux 0xcfa4dea6	tcp_v4_md5_hash_skb
+EXPORT_SYMBOL vmlinux 0xcfa77c08	cpu_down_maps_locked
 EXPORT_SYMBOL vmlinux 0xcfae9908	nvm_get_blk_unlocked
 EXPORT_SYMBOL vmlinux 0xcfb54193	unregister_md_personality
 EXPORT_SYMBOL vmlinux 0xcfb8f8ed	pcie_capability_read_word

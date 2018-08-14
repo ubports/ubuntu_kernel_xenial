@@ -8175,6 +8175,7 @@ EXPORT_SYMBOL vmlinux 0xcf533779	scsi_is_target_device
 EXPORT_SYMBOL vmlinux 0xcf59afff	writeback_inodes_sb_nr
 EXPORT_SYMBOL vmlinux 0xcf825f29	pci_dev_get
 EXPORT_SYMBOL vmlinux 0xcf976f5c	memory_cgrp_subsys
+EXPORT_SYMBOL vmlinux 0xcfa77c08	cpu_down_maps_locked
 EXPORT_SYMBOL vmlinux 0xcfa8f7a9	dump_emit
 EXPORT_SYMBOL vmlinux 0xcfb8beb4	phy_mii_ioctl
 EXPORT_SYMBOL vmlinux 0xcfc36e0e	blk_queue_init_tags

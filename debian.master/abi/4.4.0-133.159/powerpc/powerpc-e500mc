@@ -8183,6 +8183,7 @@ EXPORT_SYMBOL vmlinux 0xcf68ffe4	lwtunnel_cmp_encap
 EXPORT_SYMBOL vmlinux 0xcf71fc5a	pcix_set_mmrbc
 EXPORT_SYMBOL vmlinux 0xcf912c30	iov_iter_bvec
 EXPORT_SYMBOL vmlinux 0xcf944008	inet_reqsk_alloc
+EXPORT_SYMBOL vmlinux 0xcfa77c08	cpu_down_maps_locked
 EXPORT_SYMBOL vmlinux 0xcfb18f70	neigh_table_clear
 EXPORT_SYMBOL vmlinux 0xcfc15a58	dev_get_phys_port_name
 EXPORT_SYMBOL vmlinux 0xcff69dac	scsi_mode_sense

@@ -4233,6 +4233,7 @@ EXPORT_SYMBOL vmlinux 0xcf5aded1	atomic_dec_and_mutex_lock
 EXPORT_SYMBOL vmlinux 0xcf852108	block_truncate_page
 EXPORT_SYMBOL vmlinux 0xcf962b46	__ip4_datagram_connect
 EXPORT_SYMBOL vmlinux 0xcfa1efbe	sock_no_listen
+EXPORT_SYMBOL vmlinux 0xcfa77c08	cpu_down_maps_locked
 EXPORT_SYMBOL vmlinux 0xcfb426dd	kernel_setsockopt
 EXPORT_SYMBOL vmlinux 0xcfdfa548	generic_write_checks
 EXPORT_SYMBOL vmlinux 0xcfeae122	lockref_put_return
