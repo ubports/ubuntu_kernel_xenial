@@ -6910,6 +6910,7 @@ EXPORT_SYMBOL vmlinux 0xcf515c87	do_SAK
 EXPORT_SYMBOL vmlinux 0xcf74cbb8	__dynamic_dev_dbg
 EXPORT_SYMBOL vmlinux 0xcf876355	ppp_unregister_compressor
 EXPORT_SYMBOL vmlinux 0xcf88625f	mempool_create_node
+EXPORT_SYMBOL vmlinux 0xcfa77c08	cpu_down_maps_locked
 EXPORT_SYMBOL vmlinux 0xcff3dbae	tty_vhangup
 EXPORT_SYMBOL vmlinux 0xcff6b676	_raw_spin_trylock_bh
 EXPORT_SYMBOL vmlinux 0xd01707ea	inet6_release
