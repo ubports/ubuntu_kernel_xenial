@@ -1,0 +1,182 @@
+Source: linux-gcp
+Section: devel
+Priority: optional
+Maintainer: Ubuntu Kernel Team <kernel-team@lists.ubuntu.com>
+Standards-Version: 3.9.4.0
+Build-Depends:
+ debhelper (>= 9),
+ dh-systemd,
+ cpio,
+ kernel-wedge,
+ kmod <!stage1>,
+ makedumpfile [amd64 i386] <!stage1>,
+ libelf-dev <!stage1>,
+ libnewt-dev <!stage1>,
+ libiberty-dev <!stage1>,
+ rsync <!stage1>,
+ libdw-dev <!stage1>,
+ libpci-dev <!stage1>,
+ pkg-config <!stage1>,
+ flex <!stage1>,
+ bison <!stage1>,
+ libunwind8-dev [amd64 arm64 armhf i386 ppc64el] <!stage1>,
+ liblzma-dev <!stage1>,
+ openssl <!stage1>,
+ libssl-dev <!stage1>,
+ libaudit-dev <!stage1>,
+ bc <!stage1>,
+ python-dev <!stage1>,
+ gawk <!stage1>,
+ libudev-dev <!stage1>,
+ autoconf <!stage1>,
+ automake <!stage1>,
+ libtool <!stage1>,
+ uuid-dev <!stage1>,
+ binutils-dev <!stage1>,
+ libnuma-dev [amd64 arm64 i386 ppc64el s390x] <!stage1>,
+Build-Depends-Indep:
+ xmlto <!stage1>,
+ docbook-utils <!stage1>,
+ ghostscript <!stage1>,
+ transfig <!stage1>,
+ bzip2 <!stage1>,
+ sharutils <!stage1>,
+ asciidoc <!stage1>,
+ python-sphinx <!stage1>,
+ python-sphinx-rtd-theme <!stage1>,
+Vcs-Git: git://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-gcp/+git/xenial
+XS-Testsuite: autopkgtest
+#XS-Testsuite-Depends: gcc-4.7 binutils
+
+Package: linux-gcp-headers-4.15.0-1018
+Build-Profiles: <!stage1>
+Architecture: amd64
+Multi-Arch: foreign
+Section: devel
+Priority: optional
+Depends: ${misc:Depends}, coreutils
+Breaks: iscsitarget-dkms (<< 1.4.20.3+svn502-2ubuntu4.4)
+Description: Header files related to Linux kernel version 4.15.0
+ This package provides kernel header files for version 4.15.0, for sites
+ that want the latest kernel headers. Please read
+ /usr/share/doc/linux-gcp-headers-4.15.0-1018/debian.README.gz for details
+
+Package: linux-gcp-tools-4.15.0-1018
+Build-Profiles: <!stage1>
+Architecture: amd64
+Section: devel
+Priority: optional
+Depends: ${misc:Depends}, ${shlibs:Depends}, linux-tools-common
+Description: Linux kernel version specific tools for version 4.15.0-1018
+ This package provides the architecture dependant parts for kernel
+ version locked tools (such as perf and x86_energy_perf_policy) for
+ version 4.15.0-1018 on
+ 64 bit x86.
+ You probably want to install linux-tools-4.15.0-1018-<flavour>.
+
+Package: linux-image-4.15.0-1018-gcp
+Build-Profiles: <!stage1>
+Architecture: amd64
+Section: kernel
+Priority: optional
+Provides: linux-image, fuse-module, aufs-dkms, ${linux:rprovides}
+Depends: ${misc:Depends}, ${shlibs:Depends}, kmod, linux-base (>= 4.5ubuntu1~16.04.1), linux-modules-4.15.0-1018-gcp
+Recommends: grub-pc | grub-efi-amd64 | grub-efi-ia32 | grub | lilo
+Breaks: flash-kernel (<< 3.0~rc.4ubuntu62.2) [arm64]
+Suggests: fdutils, linux-gcp-doc-4.15.0 | linux-gcp-source-4.15.0, linux-gcp-tools, linux-headers-4.15.0-1018-gcp, initramfs-tools | linux-initramfs-tool
+Description: Linux kernel image for version 4.15.0 on 64 bit x86 SMP
+ This package contains the Linux kernel image for version 4.15.0 on
+ 64 bit x86 SMP.
+ .
+ Supports amd64 processors.
+ .
+ Geared toward GCP/GKE systems.
+ .
+ You likely do not want to install this package directly. Instead, install
+ the linux-gcp meta-package, which will ensure that upgrades work
+ correctly, and that supporting packages are also installed.
+
+Package: linux-modules-4.15.0-1018-gcp
+Build-Profiles: <!stage1>
+Architecture: amd64
+Section: kernel
+Priority: optional
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Linux kernel extra modules for version 4.15.0 on 64 bit x86 SMP
+ Contains the corresponding System.map file, the modules built by the
+ packager, and scripts that try to ensure that the system is not left in an
+ unbootable state after an update.
+ .
+ Supports amd64 processors.
+ .
+ Geared toward GCP/GKE systems.
+ .
+ You likely do not want to install this package directly. Instead, install
+ the linux-gcp meta-package, which will ensure that upgrades work
+ correctly, and that supporting packages are also installed.
+
+Package: linux-modules-extra-4.15.0-1018-gcp
+Build-Profiles: <!stage1>
+Architecture: amd64
+Section: kernel
+Priority: optional
+Depends: ${misc:Depends}, ${shlibs:Depends}, linux-image-4.15.0-1018-gcp, crda | wireless-crda
+Description: Linux kernel extra modules for version 4.15.0 on 64 bit x86 SMP
+ This package contains the Linux kernel extra modules for version 4.15.0 on
+ 64 bit x86 SMP.
+ .
+ Also includes the corresponding System.map file, the modules built by the
+ packager, and scripts that try to ensure that the system is not left in an
+ unbootable state after an update.
+ .
+ Supports amd64 processors.
+ .
+ Geared toward GCP/GKE systems.
+ .
+ You likely do not want to install this package directly. Instead, install
+ the linux-gcp meta-package, which will ensure that upgrades work
+ correctly, and that supporting packages are also installed.
+
+Package: linux-headers-4.15.0-1018-gcp
+Build-Profiles: <!stage1>
+Architecture: amd64
+Section: devel
+Priority: optional
+Depends: ${misc:Depends}, linux-gcp-headers-4.15.0-1018, ${shlibs:Depends}
+Provides: linux-headers, linux-headers-3.0
+Description: Linux kernel headers for version 4.15.0 on 64 bit x86 SMP
+ This package provides kernel header files for version 4.15.0 on
+ 64 bit x86 SMP.
+ .
+ This is for sites that want the latest kernel headers.  Please read
+ /usr/share/doc/linux-headers-4.15.0-1018/debian.README.gz for details.
+
+Package: linux-image-4.15.0-1018-gcp-dbgsym
+Build-Profiles: <!stage1>
+Architecture: amd64
+Section: devel
+Priority: optional
+Depends: ${misc:Depends}
+Provides: linux-debug
+Description: Linux kernel debug image for version 4.15.0 on 64 bit x86 SMP
+ This package provides a kernel debug image for version 4.15.0 on
+ 64 bit x86 SMP.
+ .
+ This is for sites that wish to debug the kernel.
+ .
+ The kernel image contained in this package is NOT meant to boot from. It
+ is uncompressed, and unstripped. This package also includes the
+ unstripped modules.
+
+Package: linux-tools-4.15.0-1018-gcp
+Build-Profiles: <!stage1>
+Architecture: amd64
+Section: devel
+Priority: optional
+Depends: ${misc:Depends}, linux-gcp-tools-4.15.0-1018
+Description: Linux kernel version specific tools for version 4.15.0-1018
+ This package provides the architecture dependant parts for kernel
+ version locked tools (such as perf and x86_energy_perf_policy) for
+ version 4.15.0-1018 on
+ 64 bit x86.
+
