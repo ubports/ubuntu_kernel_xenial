@@ -1348,6 +1348,11 @@ static int __init ib_ucm_init(void)
 		printk(KERN_ERR "ucm: couldn't register client\n");
 		goto error3;
 	}
+
+	printk(KERN_ERR "ucm: This module is DEPRECATED and can expose your\n");
+	printk(KERN_ERR "ucm: system to attacks! Use at your own risk!!!\n");
+	add_taint(TAINT_FORCED_MODULE, LOCKDEP_STILL_OK);
+
 	return 0;
 
 error3:
