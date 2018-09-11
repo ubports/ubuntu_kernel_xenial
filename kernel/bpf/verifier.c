@@ -190,11 +190,27 @@ struct bpf_insn_aux_data {
 	bool seen; /* this insn was processed by the verifier */
 	union {
 		enum bpf_reg_type ptr_type;	/* pointer type for load/store insns */
-		struct bpf_map *map_ptr;	/* pointer for call insn into lookup_elem */
+		unsigned long map_state;	/* pointer/poison value for maps */
 	};
 };
 
 #define MAX_USED_MAPS 64 /* max number of maps accessed by one eBPF program */
+
+#define BPF_MAP_PTR_UNPRIV	1UL
+#define BPF_MAP_PTR(X)		((struct bpf_map *)((X) & ~BPF_MAP_PTR_UNPRIV))
+
+static bool bpf_map_ptr_unpriv(const struct bpf_insn_aux_data *aux)
+{
+	return aux->map_state & BPF_MAP_PTR_UNPRIV;
+}
+
+static void bpf_map_ptr_store(struct bpf_insn_aux_data *aux,
+			      const struct bpf_map *map, bool unpriv)
+{
+	unpriv |= bpf_map_ptr_unpriv(aux);
+	aux->map_state = (unsigned long)map |
+			 (unpriv ? BPF_MAP_PTR_UNPRIV : 0UL);
+}
 
 /* single container for all structs
  * one verifier_env per bpf_check() call
@@ -967,6 +983,25 @@ error:
 	return -EINVAL;
 }
 
+static int
+record_func_map(struct verifier_env *env, struct bpf_map *map_ptr,
+		int func_id, int insn_idx)
+{
+	struct bpf_insn_aux_data *aux = &env->insn_aux_data[insn_idx];
+
+	if (func_id != BPF_FUNC_tail_call &&
+	    func_id != BPF_FUNC_map_lookup_elem)
+		return 0;
+	if (map_ptr == NULL) {
+		verbose("kernel subsystem misconfigured verifier\n");
+		return -EINVAL;
+	}
+
+	if (!BPF_MAP_PTR(aux->map_state))
+		bpf_map_ptr_store(aux, map_ptr, map_ptr->unpriv_array);
+	return 0;
+}
+
 static int check_call(struct verifier_env *env, int func_id, int insn_idx)
 {
 	struct verifier_state *state = &env->cur_state;
@@ -1003,13 +1038,6 @@ static int check_call(struct verifier_env *env, int func_id, int insn_idx)
 	err = check_func_arg(env, BPF_REG_2, fn->arg2_type, &map);
 	if (err)
 		return err;
-	if (func_id == BPF_FUNC_tail_call) {
-		if (map == NULL) {
-			verbose("verifier bug\n");
-			return -EINVAL;
-		}
-		env->insn_aux_data[insn_idx].map_ptr = map;
-	}
 	err = check_func_arg(env, BPF_REG_3, fn->arg3_type, &map);
 	if (err)
 		return err;
@@ -1017,6 +1045,10 @@ static int check_call(struct verifier_env *env, int func_id, int insn_idx)
 	if (err)
 		return err;
 	err = check_func_arg(env, BPF_REG_5, fn->arg5_type, &map);
+	if (err)
+		return err;
+
+	err = record_func_map(env, map, func_id, insn_idx);
 	if (err)
 		return err;
 
@@ -2262,6 +2294,7 @@ static int fixup_bpf_calls(struct verifier_env *env)
 	struct bpf_insn *insn = prog->insnsi;
 	const struct bpf_func_proto *fn;
 	const int insn_cnt = prog->len;
+	struct bpf_insn_aux_data *aux;
 	struct bpf_insn insn_buf[16];
 	struct bpf_prog *new_prog;
 	struct bpf_map *map_ptr;
@@ -2302,15 +2335,17 @@ static int fixup_bpf_calls(struct verifier_env *env)
 			insn->imm = 0;
 			insn->code |= BPF_X;
 
+			aux = &env->insn_aux_data[i + delta];
+			if (!bpf_map_ptr_unpriv(aux))
+				continue;
+
 			/* instead of changing every JIT dealing with tail_call
 			 * emit two extra insns:
 			 * if (index >= max_entries) goto out;
 			 * index &= array->index_mask;
 			 * to avoid out-of-bounds cpu speculation
 			 */
-			map_ptr = env->insn_aux_data[i + delta].map_ptr;
-			if (!map_ptr->unpriv_array)
-				continue;
+			map_ptr = BPF_MAP_PTR(aux->map_state);
 			insn_buf[0] = BPF_JMP_IMM(BPF_JGE, BPF_REG_3,
 						  map_ptr->max_entries, 2);
 			insn_buf[1] = BPF_ALU32_IMM(BPF_AND, BPF_REG_3,
