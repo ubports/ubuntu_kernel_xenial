@@ -1515,6 +1515,7 @@ l2tp_ip6
 l2tp_netlink
 l2tp_ppp
 l4f00242t03
+lan78xx
 lapb
 lapbether
 latch-addr-flash
@@ -1815,6 +1816,7 @@ metronomefb
 mg_disk
 michael_mic
 micrel
+microchip
 microread
 microread_i2c
 microtek
