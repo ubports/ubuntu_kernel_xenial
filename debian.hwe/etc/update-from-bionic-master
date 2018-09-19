@@ -86,10 +86,10 @@ BASE_COMMIT=`git log --pretty=one | \
 if [ "${MASTER_COMMIT}" = "${BASE_COMMIT}" ]
 then
 	echo Already up to date.
-	exit 1
-fi
-
-if ! git rebase --onto ${MASTER_COMMIT} ${BASE_COMMIT}
+	if [ -z "$SKIP_REBASE_IF_UPTODATE" ]; then
+		exit 1
+	fi
+elif ! git rebase --onto ${MASTER_COMMIT} ${BASE_COMMIT}
 then
 	exit 1
 fi
