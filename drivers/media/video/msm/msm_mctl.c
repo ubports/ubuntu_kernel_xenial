@@ -878,8 +878,17 @@ static int msm_mctl_dev_close(struct file *f)
 	struct msm_cam_v4l2_device *pcam;
 	struct msm_cam_v4l2_dev_inst *pcam_inst;
 	struct msm_cam_media_controller *pmctl;
+
+        if (f == NULL) {
+		pr_err("%s :: cannot close video driver", __func__);
+		return -EINVAL;
+	}
 	pcam_inst = container_of(f->private_data,
 		struct msm_cam_v4l2_dev_inst, eventHandle);
+	if (!pcam_inst) {
+		pr_err("%s NULL pointer of container!\n", __func__);
+		return -EINVAL;
+	}
 	pcam = pcam_inst->pcam;
 
 	D("%s : E ", __func__);
