@@ -1,3 +1,10 @@
+Building the kernel for flo:
+
+1. sudo apt install gcc-4.9-arm-linux-gnueabihf build-essential
+2. cp debian.flo/config/config.common.ubuntu arch/arm/configs/ubuntu_flo_defconfig
+3. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- CC=/usr/bin/arm-linux-gnueabihf-gcc-4.9 ubuntu_flo_defconfig
+4. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- CC=/usr/bin/arm-linux-gnueabihf-gcc-4.9 zImage
+
 	Linux kernel release 3.x <http://kernel.org/>
 
 These are the release notes for Linux version 3.  Read them carefully,
